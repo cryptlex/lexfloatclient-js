@@ -54,6 +54,7 @@ Napi::Value setHostProductId(const Napi::CallbackInfo &info)
         return env.Null();
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    ProductId = arg0;
     return Napi::Number::New(env, SetHostProductId(arg0.c_str()));
 }
 
