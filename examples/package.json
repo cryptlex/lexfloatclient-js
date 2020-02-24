@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cryptlex/lexfloatclient": "~4.0.0",
-    "readline-sync": "^1.4.10"
+    "@cryptlex/lexfloatclient": "~4.0.0"
   }
 }
