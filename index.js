@@ -26,7 +26,7 @@ class LexFloatClient {
 	 *
 	 * @param {string} productId the unique product id of your application as mentioned on
 	 * the product page in the dashboard.
-	 * @throws {LexActivatorException}
+	 * @throws {LexFloatClientException}
 	 */
 	static SetHostProductId(productId) {
 		const status = LexFloatClientNative.SetHostProductId(productId);
@@ -41,7 +41,7 @@ class LexFloatClient {
      * The url format should be: http://[ip or hostname]:[port]
      *
      * @param {string} hostUrl url string having the correct format
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static SetHostUrl(hostUrl) {
 		const status = LexFloatClientNative.SetHostUrl(hostUrl);
@@ -64,12 +64,12 @@ class LexFloatClient {
      * LexFloatStatusCodes.LF_E_SERVER_LICENSE_GRACE_PERIOD_OVER
 	 *
 	 * @param {function(int)} licenseCallback callback function
-	 * @throws {LexActivatorException}
+	 * @throws {LexFloatClientException}
 	 */
 	static SetFloatingLicenseCallback(licenseCallback) {
-		const status = LexActivatorNative.SetFloatingLicenseCallback(licenseCallback);
-		if (LexStatusCodes.LA_OK != status) {
-			throw new LexActivatorException(status);
+		const status = LexFloatClientNative.SetFloatingLicenseCallback(licenseCallback);
+		if (LexFloatStatusCodes.LF_OK != status) {
+			throw new LexFloatClientException(status);
 		}
 	}
 
@@ -84,7 +84,7 @@ class LexFloatClient {
      * encoding.
      * @param {string} value string of maximum length 256 characters with utf-8 encoding.
      * encoding.
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static SetFloatingClientMetadata(key, value) {
 		const status = LexFloatClientNative.SetFloatingClientMetadata(key, value);
@@ -99,12 +99,12 @@ class LexFloatClient {
      *
      * @param {string} key key of the metadata field whose value you want to get
      * @return Returns the metadata key value
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static GetHostLicenseMetadata(key) {
 		const array = new Uint8Array(256);
 		const status = LexFloatClientNative.GetHostLicenseMetadata(key, array, array.length);
-		if (status != LexStatusCodes.LA_OK) {
+		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
 		}
 		return arrayToString(array);
@@ -116,14 +116,14 @@ class LexFloatClient {
      *
      * @param {string} name name of the meter attribute
      * @return Returns the values of meter attribute allowed and total uses.
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static GetHostLicenseMeterAttribute(name) {
 		const allowedUses = new Uint32Array(1);
 		const totalUses = new Uint32Array(1);
 		const status = LexFloatClientNative.GetHostLicenseMeterAttribute(name, allowedUses, totalUses);
 		switch (status) {
-			case LexStatusCodes.LA_OK:
+			case LexFloatStatusCodes.LF_OK:
 				return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0]);
 			default:
 				throw new LexFloatClientException(status);
@@ -134,7 +134,7 @@ class LexFloatClient {
      * Gets the license expiry date timestamp of the LexFloatServer license.
      *
      * @return Returns the timestamp
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static GetHostLicenseExpiryDate() {
 		const expiryDate = new Uint32Array(1);
@@ -152,7 +152,7 @@ class LexFloatClient {
      *
      * @param {string} name name of the meter attribute
      * @return Returns the value of meter attribute uses by the floating client.
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static GetFloatingClientMeterAttributeUses(name) {
 		const uses = new Uint32Array(1);
@@ -166,7 +166,7 @@ class LexFloatClient {
     /**
      * Sends the request to lease the license from the LexFloatServer.
      *
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static RequestFloatingLicense() {
 		const status = LexFloatClientNative.RequestFloatingLicense();
@@ -181,7 +181,7 @@ class LexFloatClient {
      * Call this function before you exit your application to prevent zombie
      * licenses.
      *
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static DropFloatingLicense() {
 		const status = LexFloatClientNative.DropFloatingLicense();
@@ -194,7 +194,7 @@ class LexFloatClient {
      * Checks whether any license has been leased or not.
      *
      * @return true or false
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static HasFloatingLicense() {
 		const status = LexFloatClientNative.HasFloatingLicense();
@@ -213,7 +213,7 @@ class LexFloatClient {
      *
      * @param {string} name name of the meter attribute
      * @param {string} increment the increment value
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static IncrementFloatingClientMeterAttributeUses(name, increment) {
 		const status = LexFloatClientNative.IncrementFloatingClientMeterAttributeUses(name, increment);
@@ -227,7 +227,7 @@ class LexFloatClient {
      *
      * @param {string} name name of the meter attribute
      * @param {string} decrement the decrement value
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static DecrementFloatingClientMeterAttributeUses(name, decrement) {
 		const status = LexFloatClientNative.DecrementFloatingClientMeterAttributeUses(name, decrement);
@@ -240,7 +240,7 @@ class LexFloatClient {
      * Resets the meter attribute uses of the floating client.
      *
      * @param {string} name name of the meter attribute
-     * @throws {LexActivatorException}
+     * @throws {LexFloatClientException}
      */
 	static ResetFloatingClientMeterAttributeUses(name) {
 		const status = LexFloatClientNative.ResetFloatingClientMeterAttributeUses(name);
@@ -252,4 +252,4 @@ class LexFloatClient {
 
 }
 
-module.exports = { LexFloatClient, LicenseMeterAttribute, LexFloatStatusCodes, LexFloatClientExceptionss };
+module.exports = { LexFloatClient, LicenseMeterAttribute, LexFloatStatusCodes, LexFloatClientException };
