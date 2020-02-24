@@ -1,0 +1,11 @@
+# Examples directory
+examples/
+.vscode/
+build/
+bin/node_modules
+
+# libs
+LexFloatClient.dll
+LexFloatClient.lib
+libLexFloatClient.dylib
+libLexFloatClient.so
