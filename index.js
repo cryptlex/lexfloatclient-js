@@ -35,7 +35,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Sets the network address of the LexFloatServer.
 	 * 
      * The url format should be: http://[ip or hostname]:[port]
@@ -74,7 +74,7 @@ class LexFloatClient {
 	}
 
 
-    /**
+	/**
      * Sets the floating client metadata.
      * 
      * The metadata appears along with the license details of the license in
@@ -93,7 +93,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Get the value of the license metadata field associated with the
      * LexFloatServer license key.
      *
@@ -110,7 +110,7 @@ class LexFloatClient {
 		return arrayToString(array);
 	}
 
-    /**
+	/**
      * Gets the license meter attribute allowed uses and total uses associated 
      * with the LexFloatServer license.
      *
@@ -130,7 +130,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Gets the license expiry date timestamp of the LexFloatServer license.
      *
      * @return Returns the timestamp
@@ -147,7 +147,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Gets the meter attribute uses consumed by the floating client.
      *
      * @param {string} name name of the meter attribute
@@ -163,7 +163,7 @@ class LexFloatClient {
 		throw new LexFloatClientException(status);
 	}
 
-    /**
+	/**
      * Sends the request to lease the license from the LexFloatServer.
      *
      * @throws {LexFloatClientException}
@@ -175,7 +175,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Sends the request to the LexFloatServer to free the license.
 	 * 
      * Call this function before you exit your application to prevent zombie
@@ -190,7 +190,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Checks whether any license has been leased or not.
      *
      * @return true or false
@@ -208,7 +208,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Increments the meter attribute uses of the floating client.
      *
      * @param {string} name name of the meter attribute
@@ -222,7 +222,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Decrements the meter attribute uses of the floating client.
      *
      * @param {string} name name of the meter attribute
@@ -236,7 +236,7 @@ class LexFloatClient {
 		}
 	}
 
-    /**
+	/**
      * Resets the meter attribute uses of the floating client.
      *
      * @param {string} name name of the meter attribute
