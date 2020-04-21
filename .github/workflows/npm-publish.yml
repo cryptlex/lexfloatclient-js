@@ -1,0 +1,53 @@
+name: Build @cryptlex/lexfloatclient package
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '4.*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, macos-latest, windows-2019]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install Windows 2015 build tools
+        if: matrix.os == 'windows-2019'
+        run: npm i --global windows-build-tools --vs2015
+      - run: npm i --build-from-source
+      - run: npm run s3-publish
+        env:
+          node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
+          node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
+          node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
+      - name: Build for windows x86
+        if: matrix.os == 'windows-2019'
+        run: npm i --target_arch=ia32 --build-from-source 
+      - name: Publish windows x86
+        if: matrix.os == 'windows-2019'
+        run: npm run s3-publish --target_arch=ia32
+        env:
+          node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
+          node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
+          node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    if: contains(github.ref, '3.')
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
