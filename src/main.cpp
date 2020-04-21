@@ -19,7 +19,7 @@ const char *MISSING_ARGUMENTS = "Wrong number of arguments";
 const char *INVALID_ARGUMENT_TYPE = "Invalid argument type";
 const char *MISSING_PRODUCT_ID = "Product id not set";
 
-STRING ProductId;
+STRING HostProductId;
 
 map<STRING, CallbackWrapper*> LicenseCallbacks;
 
@@ -36,8 +36,8 @@ STRING toEncodedString(Napi::String input)
 
 void floatingLicenseCallback(uint32_t status)
 {
-    LicenseCallbacks[ProductId]->status = status;
-    LicenseCallbacks[ProductId]->Queue();
+    LicenseCallbacks[HostProductId]->status = status;
+    LicenseCallbacks[HostProductId]->Queue();
 }
 
 Napi::Value setHostProductId(const Napi::CallbackInfo &info)
@@ -54,7 +54,7 @@ Napi::Value setHostProductId(const Napi::CallbackInfo &info)
         return env.Null();
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
-    ProductId = arg0;
+    HostProductId = arg0;
     return Napi::Number::New(env, SetHostProductId(arg0.c_str()));
 }
 
@@ -89,13 +89,13 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Function callback = info[0].As<Napi::Function>();
-    if(ProductId.empty())
+    if(HostProductId.empty())
     {
         Napi::Error::New(env, MISSING_PRODUCT_ID).ThrowAsJavaScriptException();
         return env.Null();
     }
-    LicenseCallbacks[ProductId] = new CallbackWrapper(callback);
-    LicenseCallbacks[ProductId]->SuppressDestruct();
+    LicenseCallbacks[HostProductId] = new CallbackWrapper(callback);
+    LicenseCallbacks[HostProductId]->SuppressDestruct();
     return Napi::Number::New(env, SetFloatingLicenseCallback(floatingLicenseCallback));
 }
 
