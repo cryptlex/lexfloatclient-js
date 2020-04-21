@@ -1,14 +1,14 @@
 {
   "name": "@cryptlex/lexfloatclient",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "LexFloatClient API wrapper for Node.js.",
   "main": "index.js",
   "scripts": {
-    "build": "node-gyp rebuild",
-    "clean": "node-gyp clean",
+    "build": "./node_modules/.bin/node-pre-gyp rebuild --msvs_version=2015",
+    "s3-publish": "./node_modules/.bin/node-pre-gyp package unpublish publish info",
     "deploy": "npm publish --access public",
-    "preinstall": "cd bin && npm i && cd .. && node bin/preinstall.js",
-    "install": "node-gyp rebuild"
+    "install": "node predownload.js",
+    "postinstall": "./node_modules/.bin/node-pre-gyp install --msvs_version=2015 --fallback-to-build"
   },
   "keywords": [
     "cryptlex",
@@ -19,15 +19,31 @@
   "license": "MIT",
   "dependencies": {
     "bindings": "^1.5.0",
-    "node-addon-api": "^1.6.3"
+    "detect-libc": "^1.0.3",
+    "node-addon-api": "^1.6.3",
+    "node-pre-gyp": "^0.14.0",
+    "request": "^2.88.2",
+    "unzipper": "^0.10.10",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
-    "eslint": "^5.14.1",
-    "eslint-config-google": "^0.12.0"
+    "aws-sdk": "^2.653.0",
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/cryptlex/lexfloatclient-js.git"
+  },
+  "binary": {
+    "module_name": "lexfloatclient",
+    "module_path": "./lib/binding/{platform}-{arch}-napi-v{napi_build_version}-{libc}/",
+    "host": "https://dl.cryptlex.com",
+    "remote_path": "./downloads/nodejs/{module_name}/v{version}/",
+    "package_name": "{module_name}-{platform}-{arch}-napi-v{napi_build_version}-{libc}.tar.gz",
+    "napi_versions": [
+      3
+    ]
   },
   "homepage": "https://cryptlex.com",
   "gypfile": true

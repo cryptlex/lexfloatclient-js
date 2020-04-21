@@ -3,8 +3,9 @@ const unzipper = require('unzipper');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-
-const version = 'v4.3.3';
+const isNonGlibcLinux = require('detect-libc').isNonGlibcLinux;
+const args = require('yargs')(process.argv.slice(2).concat(JSON.parse(process.env.npm_config_argv).original)).argv;
+const version = 'v4.3.5';
 
 async function download(url, files, destPath) {
 	const directory = await unzipper.Open.url(request, url);
@@ -16,8 +17,10 @@ async function download(url, files, destPath) {
 }
 
 function isMusl() {
-	const output = require('child_process').spawnSync('ldd', ['--version']).stderr.toString('utf8');
-	if (output.indexOf('musl') > -1) {
+	if (os.platform() != 'linux') {
+		return false;
+	}
+	if (isNonGlibcLinux) {
 		return true;
 	}
 	return false;
@@ -25,26 +28,34 @@ function isMusl() {
 
 async function main() {
 	try {
-		const arch = os.arch();
-		const plat = os.platform();
-
-		console.log(`Downloading LexFloatClient library for ${plat} ${arch} ...`);
-
+		let arch = os.arch();
+		const plat = args.target_platform || os.platform();
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
 
 		let url; let files;
-
 		switch (plat) {
 		case 'darwin': // OSX
-			files = ['libs/clang/x86_64/libLexFloatClient.dylib'];
-			url = '/LexFloatClient-Mac.zip';
+			if (args.buildFromSource == null) {
+				return;
+			}
+			files = ['libs/clang/x86_64/libLexFloatClient.a'];
+			url = '/LexFloatClient-Static-Mac.zip';
 			break;
 		case 'win32': // windows
+			if (args.buildFromSource == null) {
+				return;
+			}
+			if (args.target_arch == 'ia32') {
+				arch = 'x86';
+			}
 			files = ['libs/vc14/' + arch + '/LexFloatClient.lib', 'libs/vc14/' + arch + '/LexFloatClient.dll'];
 			url = '/LexFloatClient-Win.zip';
 			break;
 		case 'linux': // linux
-			url = '/LexFloatClient-Linux.zip';
+			if (args.target_arch == 'ia32') {
+				arch = 'x32';
+			}
+			url = '/LexFloatClient-Static-Linux.zip';
 			let dir = '';
 			switch (arch) {
 			case 'arm':
@@ -54,6 +65,9 @@ async function main() {
 				dir = 'arm64';
 				break;
 			case 'x64':
+				if (args.buildFromSource == null && !isMusl()) {
+					return;
+				}
 				dir = 'amd64';
 				break;
 			case 'x32':
@@ -63,18 +77,19 @@ async function main() {
 				throw Error('Unsupported Linux arch: ' + arch);
 			}
 			if (isMusl()) {
-				files = ['libs/musl/' + dir + '/libLexFloatClient.so'];
+				files = ['libs/musl/' + dir + '/libLexFloatClient.a'];
 			} else {
-				files = ['libs/gcc/' + dir + '/libLexFloatClient.so'];
+				files = ['libs/gcc/' + dir + '/libLexFloatClient.a'];
 			}
 			break;
 		default:
 			throw Error('Unsupported platform: ' + plat);
 		}
-
+		console.log(`Downloading LexFloatClient library for ${plat} ${arch} ...`);
 		await download(baseUrl + version + url, files, './');
 
 		console.log(`LexFloatClient library successfully downloaded!`);
+		process.exit(0);
 	} catch (error) {
 		console.error(error);
 	}
