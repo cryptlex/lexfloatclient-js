@@ -1,11 +1,15 @@
 # Examples directory
 examples/
 .vscode/
+.github/
 build/
+build*/
 bin/node_modules
+lib/binding/
 
 # libs
 LexFloatClient.dll
 LexFloatClient.lib
 libLexFloatClient.dylib
 libLexFloatClient.so
+libLexFloatClient.a
