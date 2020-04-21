@@ -59,4 +59,5 @@ typings/
 build
 build*/
 lib/binding/
+libLexFloatClient.a
 
