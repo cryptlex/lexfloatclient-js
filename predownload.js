@@ -38,7 +38,7 @@ async function main() {
 			if (args.buildFromSource == null) {
 				return;
 			}
-			files = ['libs/clang/x86_64/libLexFloatClient.a'];
+			files = ['libs/clang/universal/libLexFloatClient.a'];
 			url = '/LexFloatClient-Static-Mac.zip';
 			break;
 		case 'win32': // windows
