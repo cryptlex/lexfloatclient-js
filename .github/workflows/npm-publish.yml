@@ -1,20 +1,51 @@
 name: Build @cryptlex/lexfloatclient package
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - '4.*'
+  workflow_dispatch:
+    inputs:
+      libraryVersion:
+        description: 'Library Version'
+        required: true
+        default: ''
+      packageVersion:
+        description: 'Package Version'
+        required: true
+        default: ''
 
 jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Update Library Version
+        run: |
+          sed -i '/const version =/!b;cconst version = \"v${{ github.event.inputs.libraryVersion }}";' predownload.js    
+      
+      - name: Update Package Version
+        run: |
+          sed -i '/"version":/!b;c \ \ "version": "${{ github.event.inputs.packageVersion }}",' package.json
+     
+      - name: Commit, Tag and Push
+        run: |
+          git add predownload.js
+          git add package.json
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -m "updated version" | exit 0
+          git tag ${{ github.event.inputs.packageVersion }}
+          git push & git push --tags
+     
   build:
+    needs: update-version
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-16.04, macos-latest, windows-2019]
     steps:
       - uses: actions/checkout@v2
+      - run: git pull origin master --ff-only
       - uses: actions/setup-node@v1
         with:
           node-version: 12
@@ -44,6 +75,7 @@ jobs:
     if: contains(github.ref, '4.')
     steps:
       - uses: actions/checkout@v2
+      - run: git pull origin master --ff-only
       - uses: actions/setup-node@v1
         with:
           node-version: 12
