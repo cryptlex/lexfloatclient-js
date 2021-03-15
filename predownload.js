@@ -4,7 +4,9 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const isNonGlibcLinux = require('detect-libc').isNonGlibcLinux;
-const args = require('yargs')(process.argv.slice(2).concat(JSON.parse(process.env.npm_config_argv).original)).argv;
+const platform = process.env.npm_config_target_platform || os.platform();
+const targetArch = process.env.npm_config_target_arch || null;
+const buildFromSource = process.env.npm_config_build_from_source != null;
 const version = "v4.4.3";
 
 async function download(url, files, destPath) {
@@ -29,30 +31,29 @@ function isMusl() {
 async function main() {
 	try {
 		let arch = os.arch();
-		const plat = args.target_platform || os.platform();
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
 
 		let url; let files;
-		switch (plat) {
+		switch (platform) {
 		case 'darwin': // OSX
-			if (args.buildFromSource == null) {
+			if (buildFromSource == null) {
 				return;
 			}
 			files = ['libs/clang/universal/libLexFloatClient.a'];
 			url = '/LexFloatClient-Static-Mac.zip';
 			break;
 		case 'win32': // windows
-			if (args.buildFromSource == null) {
+			if (buildFromSource == null) {
 				return;
 			}
-			if (args.target_arch == 'ia32') {
+			if (targetArch == 'ia32') {
 				arch = 'x86';
 			}
 			files = ['libs/vc14/' + arch + '/LexFloatClient.lib', 'libs/vc14/' + arch + '/LexFloatClient.dll'];
 			url = '/LexFloatClient-Win.zip';
 			break;
 		case 'linux': // linux
-			if (args.target_arch == 'ia32') {
+			if (targetArch == 'ia32') {
 				arch = 'x32';
 			}
 			url = '/LexFloatClient-Static-Linux.zip';
@@ -65,7 +66,7 @@ async function main() {
 				dir = 'arm64';
 				break;
 			case 'x64':
-				if (args.buildFromSource == null && !isMusl()) {
+				if (buildFromSource == null && !isMusl()) {
 					return;
 				}
 				dir = 'amd64';
@@ -83,9 +84,9 @@ async function main() {
 			}
 			break;
 		default:
-			throw Error('Unsupported platform: ' + plat);
+			throw Error('Unsupported platform: ' + platform);
 		}
-		console.log(`Downloading LexFloatClient library for ${plat} ${arch} ...`);
+		console.log(`Downloading LexFloatClient library for ${platform} ${arch} ...`);
 		await download(baseUrl + version + url, files, './');
 
 		console.log(`LexFloatClient library successfully downloaded!`);
