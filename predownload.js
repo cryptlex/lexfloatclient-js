@@ -7,7 +7,7 @@ const isNonGlibcLinux = require('detect-libc').isNonGlibcLinux;
 const platform = process.env.npm_config_target_platform || os.platform();
 const targetArch = process.env.npm_config_target_arch || null;
 const buildFromSource = process.env.npm_config_build_from_source != null;
-const version = "v4.4.3";
+const version = "v4.5.0";
 
 async function download(url, files, destPath) {
 	const directory = await unzipper.Open.url(request, url);
