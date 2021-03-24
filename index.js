@@ -9,12 +9,14 @@ const { LexFloatClientNative, arrayTo } = require('./lib/lexfloatclient-native')
  *  @property {name} name The name of the meter attribute.
  *  @property {allowedUses} allowedUses The allowed uses of the meter attribute.
  *  @property {totalUses} totalUses The total uses of the meter attribute.
+ *  @property {grossUses} totalUses The gross uses of the meter attribute.
  */
 class LicenseMeterAttribute {
-	constructor(name, allowedUses, totalUses) {
+	constructor(name, allowedUses, totalUses, grossUses) {
 		this.name = name;
 		this.allowedUses = allowedUses;
 		this.totalUses = totalUses;
+		this.grossUses = grossUses;
 	}
 }
 /**
@@ -121,10 +123,11 @@ class LexFloatClient {
 	static GetHostLicenseMeterAttribute(name) {
 		const allowedUses = new Uint32Array(1);
 		const totalUses = new Uint32Array(1);
-		const status = LexFloatClientNative.GetHostLicenseMeterAttribute(name, allowedUses, totalUses);
+		const grossUses = new Uint32Array(1);
+		const status = LexFloatClientNative.GetHostLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
 			case LexFloatStatusCodes.LF_OK:
-				return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0]);
+				return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0], grossUses[0]);
 			default:
 				throw new LexFloatClientException(status);
 		}
