@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 const { LexFloatClientException } = require('./lib/lexfloatclient-exception');
 const { LexFloatStatusCodes } = require('./lib/lexfloatstatus-codes');
-const { LexFloatClientNative, arrayTo } = require('./lib/lexfloatclient-native');
+const { LexFloatClientNative, arrayToString } = require('./lib/lexfloatclient-native');
 
 /**
  *  @class LicenseMeterAttribute
