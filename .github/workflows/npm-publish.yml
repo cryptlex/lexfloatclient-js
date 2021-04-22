@@ -55,7 +55,9 @@ jobs:
           node-version: 12
       - name: Install Windows 2015 build tools
         if: matrix.os == 'windows-2019'
-        run: npm i --global windows-build-tools --vs2015
+        run: | 
+          npm config set msvs_version 2015
+          npm i --global windows-build-tools --vs2015
       - run: npm i --build-from-source
       - run: npm run s3-publish
       - name: Build for windows x86
