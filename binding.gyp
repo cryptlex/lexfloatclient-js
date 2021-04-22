@@ -17,15 +17,12 @@
             "dependencies": [
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
-            'variables': {
-                'ssl_dependencies%' : "<!(node -p \"require('detect-libc').isNonGlibcLinux ? '' : '-lssl3 -lnss3 -lnspr4'\")",
-            },
             "conditions": [
                 [
                     "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-Bstatic  -L<(module_root_dir) -lLexFloatClient -Wl,-Bdynamic -lpthread <(ssl_dependencies)"
+                            "-Wl,-Bstatic  -L<(module_root_dir) -lLexFloatClient -Wl,-Bdynamic -lpthread"
                         ]
                     }
                 ],
