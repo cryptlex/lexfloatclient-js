@@ -1,13 +1,13 @@
 #include "LexFloatClient.h"
 #include "CallbackWrapper.h"
 #include <string>
-#include <codecvt>
 #include <locale>
 #include <map>
 
 using namespace ::std;
 
 #ifdef _WIN32
+#include <codecvt>
 typedef wchar_t CHARTYPE;
 typedef wstring STRING;
 #else
