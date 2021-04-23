@@ -27,5 +27,5 @@
     "url": "https://github.com/cryptlex/lexfloatclient-js.git"
   },
   "homepage": "https://cryptlex.com",
-  "gypfile": true
+  "gypfile": false
 }
