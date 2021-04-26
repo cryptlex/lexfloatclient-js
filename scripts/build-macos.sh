@@ -19,3 +19,4 @@ cp ./build/Release/lexfloatclient.node ./lib/bindings/macos/x64
 
 node-gyp rebuild --arch=arm64
 cp ./build/Release/lexfloatclient.node ./lib/bindings/macos/arm64
+rm -f LexFloatClient-Static-Linux.zip

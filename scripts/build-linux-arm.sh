@@ -5,7 +5,7 @@ set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 # echo an error message before exiting
 trap 'echo "\"${last_command}\" finished with exit code $?."' EXIT
-
+source ~/.bashrc
 URL="https://dl.cryptlex.com/downloads/"
 VERSION="v4.5.2"
 wget ${URL}${VERSION}/LexFloatClient-Static-Linux.zip
@@ -21,3 +21,4 @@ export CXX=${CROSS_COMPILE}-g++
 npm i
 node-gyp rebuild --arch=aarch64
 cp ./build/Release/lexfloatclient.node ./lib/bindings/linux/gcc/arm64
+rm -f LexFloatClient-Static-Linux.zip
