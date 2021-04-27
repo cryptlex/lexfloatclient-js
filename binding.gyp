@@ -42,14 +42,6 @@
                     {
                         "libraries": [
                             "<(module_root_dir)/LexFloatClient.lib"
-                        ],
-                        "copies": [
-                            {
-                                "files": [
-                                    "<(module_root_dir)/LexFloatClient.dll"
-                                ],
-                                "destination": "<(module_path)"
-                            }
                         ]
                     }
                 ]
@@ -59,7 +51,7 @@
             ],
             "xcode_settings": {
                 "CLANG_CXX_LIBRARY": "libc++",
-                "MACOSX_DEPLOYMENT_TARGET": "10.8"
+                "MACOSX_DEPLOYMENT_TARGET": "10.9"
             }
         }
     ]
