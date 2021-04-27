@@ -8,6 +8,7 @@ node_modules/
 scripts/
 
 # libs
+.gitkeep 
 LexFloatClient.lib
 libLexFloatClient.dylib
 libLexFloatClient.so
