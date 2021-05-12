@@ -1,6 +1,6 @@
 {
   "name": "@cryptlex/lexfloatclient",
-  "version": "4.5.3",
+  "version": "4.5.4",
   "description": "LexFloatClient API wrapper for Node.js.",
   "main": "index.js",
   "scripts": {
