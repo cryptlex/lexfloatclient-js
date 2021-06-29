@@ -13,3 +13,4 @@ LexFloatClient.lib
 libLexFloatClient.dylib
 libLexFloatClient.so
 libLexFloatClient.a
+binding.gyp
