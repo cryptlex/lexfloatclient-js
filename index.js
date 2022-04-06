@@ -19,6 +19,21 @@ class LicenseMeterAttribute {
 		this.grossUses = grossUses;
 	}
 }
+
+/**
+ * @class ProductVersionFeatureFlag
+ * @type {Object}
+ * @property {name} name The name of the feature flag.
+ * @property {enabled} enabled status of the feature flag.
+ * @property {data} data value of the feature flag.
+ */
+class ProductVersionFeatureFlag {
+	constructor(name, enabled, data) {
+		this.name = name;
+		this.enabled = enabled;
+		this.data = data;
+	}
+}
 /**
  * @class LexFloatClient
  */
@@ -92,6 +107,52 @@ class LexFloatClient {
 		const status = LexFloatClientNative.SetFloatingClientMetadata(key, value);
 		if (LexFloatStatusCodes.LF_OK != status) {
 			throw new LexFloatClientException(status);
+		}
+	}
+
+	/**
+	 * Gets the product version name.
+	 * @returns Returns the product version name.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetProductVersionName() {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetProductVersionName(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the product version display name.
+	 * @returns Returns the product version display name.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetProductVersionDisplayName() {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetProductVersionDisplayName(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the product version feature flag.
+	 * @param {string} name 
+	 * @returns Returns the product version feature flag.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetProductVersionFeatureFlag(name) {
+		const enabled = new Uint32Array(1);
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetProductVersionFeatureFlag(name, enabled, array, array.length);
+		switch (status) {
+			case LexFloatStatusCodes.LF_OK:
+				return new ProductVersionFeatureFlag(name, enabled > 0, arrayToString(array));
+			default:
+				throw new LexFloatClientException(status);
 		}
 	}
 
