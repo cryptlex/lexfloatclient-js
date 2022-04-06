@@ -122,6 +122,75 @@ Napi::Value setFloatingClientMetadata(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetFloatingClientMetadata(arg0.c_str(), arg1.c_str()));
 }
 
+Napi::Value getProductVersionName(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetProductVersionName(arg0, length));
+}
+
+Napi::Value getProductVersionDisplayName(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetProductVersionDisplayName(arg0, length));
+}
+
+Napi::Value getProductVersionFeatureFlag(const Napi::CallbackInfo &info) {
+    Napi::Env env = info.Env();
+    if (info.Length() < 3)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[1].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[2].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    Napi::Uint32Array array1 = info[1].As<Napi::Uint32Array>();
+    uint32_t *arg1 = reinterpret_cast<uint32_t *>(array1.ArrayBuffer().Data());
+    Napi::Uint8Array array2 = info[2].As<Napi::Uint8Array>();
+    CHARTYPE *arg2 = reinterpret_cast<CHARTYPE *>(array2.ArrayBuffer().Data());
+    size_t length = array2.ElementLength();
+    return Napi::Number::New(env, GetProductVersionFeatureFlag(arg0.c_str(), arg1, arg2, length));
+}
+
 Napi::Value getHostLicenseMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -311,6 +380,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetHostUrl"] = Napi::Function::New(env, setHostUrl);
     exports["SetFloatingLicenseCallback"] = Napi::Function::New(env, setFloatingLicenseCallback);
     exports["SetFloatingClientMetadata"] = Napi::Function::New(env, setFloatingClientMetadata);
+    exports["GetProductVersionName"] = Napi::Function::New(env, getProductVersionName);
+    exports["GetProductVersionDisplayName"] = Napi::Function::New(env, getProductVersionDisplayName);
+    exports["GetProductVersionFeatureFlag"] = Napi::Function::New(env, getProductVersionFeatureFlag);
     exports["GetHostLicenseMetadata"] = Napi::Function::New(env, getHostLicenseMetadata);
     exports["GetHostLicenseMeterAttribute"] = Napi::Function::New(env, getHostLicenseMeterAttribute);
     exports["GetHostLicenseExpiryDate"] = Napi::Function::New(env, getHostLicenseExpiryDate);
