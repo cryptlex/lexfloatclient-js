@@ -115,9 +115,9 @@ class LexFloatClient {
 	 * @returns Returns the product version name.
 	 * @throws {LexFloatClientException}
 	 */
-	static GetProductVersionName() {
+	static GetHostProductVersionName() {
 		const array = new Uint8Array(256);
-		const status = LexFloatClientNative.GetProductVersionName(array, array.length);
+		const status = LexFloatClientNative.GetHostProductVersionName(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
 		}
@@ -129,9 +129,9 @@ class LexFloatClient {
 	 * @returns Returns the product version display name.
 	 * @throws {LexFloatClientException}
 	 */
-	static GetProductVersionDisplayName() {
+	static GetHostProductVersionDisplayName() {
 		const array = new Uint8Array(256);
-		const status = LexFloatClientNative.GetProductVersionDisplayName(array, array.length);
+		const status = LexFloatClientNative.GetHostProductVersionDisplayName(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
 		}
@@ -144,10 +144,10 @@ class LexFloatClient {
 	 * @returns Returns the product version feature flag.
 	 * @throws {LexFloatClientException}
 	 */
-	static GetProductVersionFeatureFlag(name) {
+	static GetHostProductVersionFeatureFlag(name) {
 		const enabled = new Uint32Array(1);
 		const array = new Uint8Array(256);
-		const status = LexFloatClientNative.GetProductVersionFeatureFlag(name, enabled, array, array.length);
+		const status = LexFloatClientNative.GetHostProductVersionFeatureFlag(name, enabled, array, array.length);
 		switch (status) {
 			case LexFloatStatusCodes.LF_OK:
 				return new ProductVersionFeatureFlag(name, enabled > 0, arrayToString(array));

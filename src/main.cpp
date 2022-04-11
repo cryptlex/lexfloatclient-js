@@ -122,7 +122,7 @@ Napi::Value setFloatingClientMetadata(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetFloatingClientMetadata(arg0.c_str(), arg1.c_str()));
 }
 
-Napi::Value getProductVersionName(const Napi::CallbackInfo &info)
+Napi::Value getHostProductVersionName(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     if (info.Length() < 1)
@@ -138,10 +138,10 @@ Napi::Value getProductVersionName(const Napi::CallbackInfo &info)
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
-    return Napi::Number::New(env, GetProductVersionName(arg0, length));
+    return Napi::Number::New(env, GetHostProductVersionName(arg0, length));
 }
 
-Napi::Value getProductVersionDisplayName(const Napi::CallbackInfo &info)
+Napi::Value getHostProductVersionDisplayName(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     if (info.Length() < 1)
@@ -157,10 +157,10 @@ Napi::Value getProductVersionDisplayName(const Napi::CallbackInfo &info)
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
-    return Napi::Number::New(env, GetProductVersionDisplayName(arg0, length));
+    return Napi::Number::New(env, GetHostProductVersionDisplayName(arg0, length));
 }
 
-Napi::Value getProductVersionFeatureFlag(const Napi::CallbackInfo &info) {
+Napi::Value getHostProductVersionFeatureFlag(const Napi::CallbackInfo &info) {
     Napi::Env env = info.Env();
     if (info.Length() < 3)
     {
@@ -188,7 +188,7 @@ Napi::Value getProductVersionFeatureFlag(const Napi::CallbackInfo &info) {
     Napi::Uint8Array array2 = info[2].As<Napi::Uint8Array>();
     CHARTYPE *arg2 = reinterpret_cast<CHARTYPE *>(array2.ArrayBuffer().Data());
     size_t length = array2.ElementLength();
-    return Napi::Number::New(env, GetProductVersionFeatureFlag(arg0.c_str(), arg1, arg2, length));
+    return Napi::Number::New(env, GetHostProductVersionFeatureFlag(arg0.c_str(), arg1, arg2, length));
 }
 
 Napi::Value getHostLicenseMetadata(const Napi::CallbackInfo &info)
@@ -380,9 +380,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetHostUrl"] = Napi::Function::New(env, setHostUrl);
     exports["SetFloatingLicenseCallback"] = Napi::Function::New(env, setFloatingLicenseCallback);
     exports["SetFloatingClientMetadata"] = Napi::Function::New(env, setFloatingClientMetadata);
-    exports["GetProductVersionName"] = Napi::Function::New(env, getProductVersionName);
-    exports["GetProductVersionDisplayName"] = Napi::Function::New(env, getProductVersionDisplayName);
-    exports["GetProductVersionFeatureFlag"] = Napi::Function::New(env, getProductVersionFeatureFlag);
+    exports["GetHostProductVersionName"] = Napi::Function::New(env, getHostProductVersionName);
+    exports["GetHostProductVersionDisplayName"] = Napi::Function::New(env, getHostProductVersionDisplayName);
+    exports["GetHostProductVersionFeatureFlag"] = Napi::Function::New(env, getHostProductVersionFeatureFlag);
     exports["GetHostLicenseMetadata"] = Napi::Function::New(env, getHostLicenseMetadata);
     exports["GetHostLicenseMeterAttribute"] = Napi::Function::New(env, getHostLicenseMeterAttribute);
     exports["GetHostLicenseExpiryDate"] = Napi::Function::New(env, getHostLicenseExpiryDate);
