@@ -56,10 +56,14 @@ typings/
 # dotenv environment variables file
 .env
 
-# next.js build output
-.next
+# VSCode Config
+.vscode
+
+# Generated files
+lib/*.js
+lib/*.ts
 build
 build*/
 lib/binding/
 libLexFloatClient.a
-
+lib/*.map
