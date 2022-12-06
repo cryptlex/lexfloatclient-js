@@ -1,14 +1,12 @@
-const { LexFloatStatusCodes } = require('./lexfloatstatus-codes');
+import { LexFloatStatusCodes } from "./lexfloatstatus-codes";
 
-/* eslint-disable indent */
-class LexFloatClientException extends Error {
-	constructor(code) {
+export class LexFloatClientException extends Error {
+	constructor(code: number) {
 		super(LexFloatClientException.getErrorMessage(code));
 		Error.captureStackTrace(this, this.constructor);
-		this.code = code;
 	}
 
-	static getErrorMessage(code) {
+	static getErrorMessage(code: number) {
 		let message = 'Unknown error!';
 		switch (code) {
 			case LexFloatStatusCodes.LF_E_PRODUCT_ID:
@@ -98,5 +96,3 @@ class LexFloatClientException extends Error {
 		return message;
 	}
 }
-
-module.exports = { LexFloatClientException };

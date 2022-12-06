@@ -1,4 +1,4 @@
-const LexFloatStatusCodes = {
+export const LexFloatStatusCodes = {
 
 	/**
 	 * Success code.
@@ -149,5 +149,3 @@ const LexFloatStatusCodes = {
 	 */
 	LF_E_SERVER_LICENSE_GRACE_PERIOD_OVER: 76
 };
-
-module.exports = { LexFloatStatusCodes };
