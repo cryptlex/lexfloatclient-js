@@ -4,14 +4,14 @@ const { LexFloatStatusCodes } = require('./lib/lexfloatstatus-codes');
 const { LexFloatClientNative, arrayToString } = require('./lib/lexfloatclient-native');
 
 /**
- *  @class LicenseMeterAttribute
+ *  @class HostLicenseMeterAttribute
  *  @type {Object}
  *  @property {name} name The name of the meter attribute.
  *  @property {allowedUses} allowedUses The allowed uses of the meter attribute.
  *  @property {totalUses} totalUses The total uses of the meter attribute.
  *  @property {grossUses} totalUses The gross uses of the meter attribute.
  */
-class LicenseMeterAttribute {
+class HostLicenseMeterAttribute {
 	constructor(name, allowedUses, totalUses, grossUses) {
 		this.name = name;
 		this.allowedUses = allowedUses;
@@ -21,13 +21,13 @@ class LicenseMeterAttribute {
 }
 
 /**
- * @class ProductVersionFeatureFlag
+ * @class HostProductVersionFeatureFlag
  * @type {Object}
  * @property {name} name The name of the feature flag.
  * @property {enabled} enabled status of the feature flag.
  * @property {data} data value of the feature flag.
  */
-class ProductVersionFeatureFlag {
+class HostProductVersionFeatureFlag {
 	constructor(name, enabled, data) {
 		this.name = name;
 		this.enabled = enabled;
@@ -150,7 +150,7 @@ class LexFloatClient {
 		const status = LexFloatClientNative.GetHostProductVersionFeatureFlag(name, enabled, array, array.length);
 		switch (status) {
 			case LexFloatStatusCodes.LF_OK:
-				return new ProductVersionFeatureFlag(name, enabled > 0, arrayToString(array));
+				return new HostProductVersionFeatureFlag(name, enabled > 0, arrayToString(array));
 			default:
 				throw new LexFloatClientException(status);
 		}
@@ -188,7 +188,7 @@ class LexFloatClient {
 		const status = LexFloatClientNative.GetHostLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
 			case LexFloatStatusCodes.LF_OK:
-				return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0], grossUses[0]);
+				return new HostLicenseMeterAttribute(name, allowedUses[0], totalUses[0], grossUses[0]);
 			default:
 				throw new LexFloatClientException(status);
 		}
@@ -316,4 +316,4 @@ class LexFloatClient {
 
 }
 
-module.exports = { LexFloatClient, LicenseMeterAttribute, LexFloatStatusCodes, LexFloatClientException };
+module.exports = { LexFloatClient, HostLicenseMeterAttribute, HostProductVersionFeatureFlag, LexFloatStatusCodes, LexFloatClientException };
