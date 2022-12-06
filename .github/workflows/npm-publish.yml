@@ -94,7 +94,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: git pull origin master --ff-only
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
@@ -105,6 +105,13 @@ jobs:
           path: ./lib/bindings
           name: artifacts
 
-      - run: npm publish --access public
+      - name: 'Build library'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
