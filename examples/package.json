@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cryptlex/lexfloatclient": "~4.5.5"
+    "@cryptlex/lexfloatclient": "latest"
   }
 }
