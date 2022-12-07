@@ -67,3 +67,4 @@ build*/
 lib/binding/
 libLexFloatClient.a
 lib/*.map
+tmp
