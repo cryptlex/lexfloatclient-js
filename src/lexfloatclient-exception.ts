@@ -1,8 +1,11 @@
 import { LexFloatStatusCodes } from "./lexfloatstatus-codes";
 
 export class LexFloatClientException extends Error {
+	/** LexFloatClientException numeric identifier */
+	code: number;
 	constructor(code: number) {
 		super(LexFloatClientException.getErrorMessage(code));
+		this.code = code;
 		Error.captureStackTrace(this, this.constructor);
 	}
 
