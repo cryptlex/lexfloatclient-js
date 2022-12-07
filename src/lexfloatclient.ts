@@ -334,4 +334,3 @@ export class LexFloatClient {
 
 }
 
-module.exports = { LexFloatClient, HostLicenseMeterAttribute, HostProductVersionFeatureFlag, LexFloatStatusCodes, LexFloatClientException };

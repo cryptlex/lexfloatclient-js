@@ -6,7 +6,7 @@ export class LexFloatClientException extends Error {
 		Error.captureStackTrace(this, this.constructor);
 	}
 
-	static getErrorMessage(code: number) {
+	static getErrorMessage(code: number): string {
 		let message = 'Unknown error!';
 		switch (code) {
 			case LexFloatStatusCodes.LF_E_PRODUCT_ID:
