@@ -221,6 +221,18 @@ LEXFLOATCLIENT_API int LF_CC GetHostLicenseExpiryDate(uint32_t *expiryDate);
 LEXFLOATCLIENT_API int LF_CC GetFloatingClientMeterAttributeUses(CSTRTYPE name, uint32_t *uses);
 
 /*
+    FUNCTION: GetFloatingClientLibraryVersion()
+
+    PURPOSE: Gets the version of this library.
+
+    PARAMETERS:
+    * libraryVersion - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the libraryVersion parameter
+ 
+    RETURN CODES: LF_OK, LF_E_BUFFER_SIZE
+*/
+LEXFLOATCLIENT_API int LF_CC GetFloatingClientLibraryVersion(STRTYPE libraryVersion, uint32_t length);
+/*
     FUNCTION: RequestFloatingLicense()
 
     PURPOSE: Sends the request to lease the license from the LexFloatServer.
