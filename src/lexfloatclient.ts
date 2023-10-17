@@ -255,7 +255,7 @@ export class LexFloatClient {
 		const status = LexFloatClientNative.GetFloatingClientLibraryVersion(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
-			}
+		}
 		return arrayToString(array);
 	}
 
