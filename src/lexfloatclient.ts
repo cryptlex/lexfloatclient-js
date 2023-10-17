@@ -246,6 +246,20 @@ export class LexFloatClient {
 	}
 
 	/**
+	 * Gets the library version.
+	 * @returns Returns the library version.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingClientLibraryVersion(): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetFloatingClientLibraryVersion(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
 	 * Sends the request to lease the license from the LexFloatServer.
 	 *
 	 * @throws {LexFloatClientException}
