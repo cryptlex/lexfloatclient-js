@@ -1,7 +1,7 @@
 #!/bin/sh
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v4.7.7";
+VERSION="v4.8.0";
 wget ${URL}${VERSION}/LexFloatClient-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexFloatClient-Static-Linux.zip -d ./tmp/linux
