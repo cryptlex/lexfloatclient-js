@@ -117,7 +117,7 @@ export class LexFloatClient {
 	 *
 	 * @param {string} key string of maximum length 256 characters with utf-8 encoding.
 	 * encoding.
-	 * @param {string} value string of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} value string of maximum length 4096 characters with utf-8 encoding.
 	 * encoding.
 	 * @throws {LexFloatClientException}
 	 */
