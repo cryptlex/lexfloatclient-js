@@ -79,7 +79,7 @@ export const LexFloatStatusCodes = {
 	LF_E_METADATA_KEY_LENGTH: 52,
 
 	/**
-	 * Metadata value length is more than 256 characters.
+	 * Metadata value length is more than 4096 characters.
 	 */
 	LF_E_METADATA_VALUE_LENGTH: 53,
 
