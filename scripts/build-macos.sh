@@ -13,7 +13,7 @@ unzip -o LexFloatClient-Static-Mac.zip -d ./tmp/macos
 
 cp ./tmp/macos/libs/clang/universal/libLexFloatClient.a ./
 npm i
-
+python3 -m pip install setuptools
 node-gyp rebuild 
 cp ./build/Release/lexfloatclient.node ./lib/bindings/macos/x64
 
