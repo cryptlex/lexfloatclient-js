@@ -155,6 +155,20 @@ export class LexFloatClient {
 		}
 		return arrayToString(array);
 	}
+	
+	/**
+	 * Gets the mode of the floating license (online or offline).
+	 * @returns floating license mode.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingLicenseMode(): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetFloatingLicenseMode(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
 
 	/**
 	 * Gets the product version feature flag.
