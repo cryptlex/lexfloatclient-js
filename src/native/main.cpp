@@ -330,6 +330,25 @@ Napi::Value hasFloatingLicense(const Napi::CallbackInfo &info)
     return Napi::Number::New(info.Env(), HasFloatingLicense());
 }
 
+Napi::Value getFloatingClientLeaseExpiryDate(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint32Array array = info[0].As<Napi::Uint32Array>();
+    uint32_t *arg0 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetFloatingClientLeaseExpiryDate(arg0));
+}
+
+
 Napi::Value incrementFloatingClientMeterAttributeUses(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -410,6 +429,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["RequestFloatingLicense"] = Napi::Function::New(env, requestFloatingLicense);
     exports["DropFloatingLicense"] = Napi::Function::New(env, dropFloatingLicense);
     exports["HasFloatingLicense"] = Napi::Function::New(env, hasFloatingLicense);
+    exports["GetFloatingClientLeaseExpiryDate"] = Napi::Function::New(env, getFloatingClientLeaseExpiryDate);
     exports["IncrementFloatingClientMeterAttributeUses"] = Napi::Function::New(env, incrementFloatingClientMeterAttributeUses);
     exports["DecrementFloatingClientMeterAttributeUses"] = Napi::Function::New(env, decrementFloatingClientMeterAttributeUses);
     exports["ResetFloatingClientMeterAttributeUses"] = Napi::Function::New(env, resetFloatingClientMeterAttributeUses);
