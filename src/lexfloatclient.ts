@@ -58,7 +58,7 @@ export class HostProductVersionFeatureFlag {
 export class LexFloatClient {
 	/**
 	 * Sets the product id of your application.
-	 *
+	
 	 * @param {string} productId the unique product id of your application as mentioned on
 	 * the product page in the dashboard.
 	 * @throws {LexFloatClientException}
@@ -301,6 +301,20 @@ export class LexFloatClient {
 				return false;
 			default:
 				throw new LexFloatClientException(status);
+		}
+	}
+
+	/**
+	 * Sends the request to lease the license from the LexFloatServer for offline usage.
+	 * The maximum value of lease duration is configured in the config.yml of LexFloatServer 
+	 *
+	 * @param {number} leaseDuration seconds to lease the license for
+	 * @throws {LexFloatClientException}
+	 */
+	static RequestOfflineFloatingLicense(leaseDuration: number): void {
+		const status = LexFloatClientNative.RequestOfflineFloatingLicense(leaseDuration);
+		if (LexFloatStatusCodes.LF_OK != status) {
+			throw new LexFloatClientException(status);
 		}
 	}
 
