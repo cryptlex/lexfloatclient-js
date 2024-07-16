@@ -30,6 +30,14 @@ export class HostLicenseMeterAttribute {
 }
 
 /**
+ * @class PermissionFlags
+ * @constructor
+ */
+export const PermissionFlags = {
+	'LF_USER': 10,
+	'LF_ALL_USERS': 11,
+};
+/**
  * @class HostProductVersionFeatureFlag
  * @constructor
  */
@@ -366,8 +374,4 @@ export class LexFloatClient {
 
 
 }
-export const PermissionFlags = {
-	'LF_USER': 10,
-	'LF_ALL_USERS': 11,
-};
 
