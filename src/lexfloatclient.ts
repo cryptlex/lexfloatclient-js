@@ -9,19 +9,19 @@ import { LexFloatStatusCodes } from "./lexfloatstatus-codes";
 export class HostLicenseMeterAttribute {
 	/** The name of the meter attribute. */
 	name: string;
-	/** The allowed uses of the meter attribute. */
-	allowedUses: number;
+	/** The allowed uses of the meter attribute. A value of -1 indicates unlimited allowed uses. */
+	allowedUses: bigint;
 	/** The total uses of the meter attribute. */
-	totalUses: number;
+	totalUses: bigint;
 	/** The gross uses of the meter attribute. */
-	grossUses: number;
+	grossUses: bigint;
 	/**
 	 * @param name The name of the meter attribute.
-	 * @param allowedUses The allowed uses of the meter attribute.
+	 * @param allowedUses The allowed uses of the meter attribute. A value of -1 indicates unlimited allowed uses.
 	 * @param totalUses The total uses of the meter attribute.
 	 * @param grossUses The gross uses of the meter attribute.
 	 */
-	constructor(name: string, allowedUses: number, totalUses: number, grossUses: number) {
+	constructor(name: string, allowedUses: bigint, totalUses: bigint, grossUses: bigint) {
 		this.name = name;
 		this.allowedUses = allowedUses;
 		this.totalUses = totalUses;
@@ -200,13 +200,13 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostLicenseMeterAttribute(name: string): HostLicenseMeterAttribute {
-		const allowedUses = new Uint32Array(1);
-		const totalUses = new Uint32Array(1);
-		const grossUses = new Uint32Array(1);
+		const allowedUses = new BigInt64Array(1);
+		const totalUses = new BigUint64Array(1);
+		const grossUses = new BigUint64Array(1);
 		const status = LexFloatClientNative.GetHostLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
 			case LexFloatStatusCodes.LF_OK:
-				return new HostLicenseMeterAttribute(name, allowedUses[0] ? allowedUses[0] : 0, totalUses[0] ? totalUses[0] : 0, grossUses[0] ? grossUses[0] : 0);
+				return new HostLicenseMeterAttribute(name, allowedUses[0] ? allowedUses[0] : BigInt(0), totalUses[0] ? totalUses[0] : BigInt(0), grossUses[0] ? grossUses[0] : BigInt(0));
 			default:
 				throw new LexFloatClientException(status);
 		}

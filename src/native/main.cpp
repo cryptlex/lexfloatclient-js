@@ -245,12 +245,12 @@ Napi::Value getHostLicenseMeterAttribute(const Napi::CallbackInfo &info)
         return env.Null();
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
-    Napi::Uint32Array array1 = info[1].As<Napi::Uint32Array>();
-    uint32_t *arg1 = reinterpret_cast<uint32_t *>(array1.ArrayBuffer().Data());
-    Napi::Uint32Array array2 = info[2].As<Napi::Uint32Array>();
-    uint32_t *arg2 = reinterpret_cast<uint32_t *>(array2.ArrayBuffer().Data());
-    Napi::Uint32Array array3 = info[3].As<Napi::Uint32Array>();
-    uint32_t *arg3 = reinterpret_cast<uint32_t *>(array3.ArrayBuffer().Data());
+    Napi::BigInt64Array array1 = info[1].As<Napi::BigInt64Array>();
+    uint32_t *arg1 = reinterpret_cast<int64_t *>(array1.ArrayBuffer().Data());
+    Napi::BigInt64Array array2 = info[2].As<Napi::BigInt64Array>();
+    uint32_t *arg2 = reinterpret_cast<uint64_t *>(array2.ArrayBuffer().Data());
+    Napi::BigInt64Array array3 = info[3].As<Napi::BigInt64Array>();
+    uint32_t *arg3 = reinterpret_cast<uint64_t *>(array3.ArrayBuffer().Data());
     return Napi::Number::New(env, GetHostLicenseMeterAttribute(arg0.c_str(), arg1, arg2, arg3));
 }
 
