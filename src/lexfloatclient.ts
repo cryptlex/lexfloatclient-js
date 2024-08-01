@@ -337,6 +337,23 @@ export class LexFloatClient {
 	}
 
 	/**
+	 * Gets the lease expiry date timestamp of the floating client.
+	 *
+	 * @return Returns the timestamp
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingClientLeaseExpiryDate(): number {
+		const expiryDate = new Uint32Array(1);
+		const status = LexFloatClientNative.GetFloatingClientLeaseExpiryDate(expiryDate);
+		switch (status) {
+			case LexFloatStatusCodes.LF_OK:
+				return expiryDate[0] ? expiryDate[0] : 0;
+			default:
+				throw new LexFloatClientException(status);
+		}
+	}
+
+	/**
 	 * Increments the meter attribute uses of the floating client.
 	 *
 	 * @param {string} name name of the meter attribute

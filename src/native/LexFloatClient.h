@@ -284,6 +284,18 @@ LEXFLOATCLIENT_API int LF_CC DropFloatingLicense();
 LEXFLOATCLIENT_API int LF_CC HasFloatingLicense();
 
 /*
+    FUNCTION: GetFloatingClientLeaseExpiryDate()
+
+    PURPOSE: Gets the lease expiry date timestamp of the floating client.
+
+    PARAMETERS:
+    * leaseExpiryDate - pointer to the integer that receives the value
+
+    RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_NO_LICENSE
+*/
+LEXFLOATCLIENT_API int LF_CC GetFloatingClientLeaseExpiryDate(uint32_t *leaseExpiryDate);
+
+/*
     FUNCTION: GetFloatinglicenseMode()
 
     PURPOSE: Gets the mode of the floating license (online or offline).
@@ -311,6 +323,7 @@ LEXFLOATCLIENT_API int LF_CC GetFloatingLicenseMode(STRTYPE modePtr, uint32_t le
     LF_E_SERVER_LICENSE_GRACE_PERIOD_OVER, LF_E_SERVER_LICENSE_EXPIRED
 
 */
+
 LEXFLOATCLIENT_API int LF_CC IncrementFloatingClientMeterAttributeUses(CSTRTYPE name, uint32_t increment);
 
 /*
