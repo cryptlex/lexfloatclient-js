@@ -155,6 +155,20 @@ export class LexFloatClient {
 		}
 		return arrayToString(array);
 	}
+	
+	/**
+	 * Gets the mode of the floating license (online or offline).
+	 * @returns floating license mode.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingLicenseMode(): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetFloatingLicenseMode(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
 
 	/**
 	 * Gets the product version feature flag.
@@ -245,6 +259,22 @@ export class LexFloatClient {
 		throw new LexFloatClientException(status);
 	}
 
+
+	/**
+	 * Gets the value of the floating client metadata.
+	 *
+	 * @param {string} key key of the metadata field whose value you want to get
+	 * @return Returns the metadata key value
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingClientMetadata(key: string): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetFloatingClientMetadata(key, array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
 	/**
 	 * Gets the library version.
 	 * @returns Returns the library version.
@@ -299,6 +329,25 @@ export class LexFloatClient {
 				return true;
 			case LexFloatStatusCodes.LF_E_NO_LICENSE:
 				return false;
+			case LexFloatStatusCodes.LF_FAIL:
+				return false;
+			default:
+				throw new LexFloatClientException(status);
+		}
+	}
+
+	/**
+	 * Gets the lease expiry date timestamp of the floating client.
+	 *
+	 * @return Returns the timestamp
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingClientLeaseExpiryDate(): number {
+		const expiryDate = new Uint32Array(1);
+		const status = LexFloatClientNative.GetFloatingClientLeaseExpiryDate(expiryDate);
+		switch (status) {
+			case LexFloatStatusCodes.LF_OK:
+				return expiryDate[0] ? expiryDate[0] : 0;
 			default:
 				throw new LexFloatClientException(status);
 		}
