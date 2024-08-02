@@ -242,9 +242,9 @@ export class LexFloatClient {
 	}
 
 	/**
-	 * Gets the organization address associated with the license.
+	 *  This function sends a network request to LexFloatServer to get the configuration details.
 	 * 
-	 * @return {OrganizationAddress} the license organization address
+	 * @return Configuration details
 	 * @throws {LexActivatorException}
 	 */
 	static GetHostConfig(): HostConfig | null {
