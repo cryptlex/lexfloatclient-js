@@ -146,7 +146,7 @@ export class LexFloatClient {
 	 * the following values: LF_USER, LF_ALL_USERS.
 	 *  - LF_USER: This flag indicates that the application does not require admin or root permissions to run.
 	 *  - LF_ALL_USERS: This flag is specifically designed for Windows and should be used for system-wide activations.
-	 * @throws {LexFloatClientException} If the status code is not LF_OK or LF_E_PRODUCT_ID.
+	 * @throws {LexFloatClientException} 
 	 */
 	static SetPermissionFlag(flag: typeof PermissionFlags[keyof typeof PermissionFlags]): void {
 		const status = LexFloatClientNative.SetPermissionFlag(flag);

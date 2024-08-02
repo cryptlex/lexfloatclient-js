@@ -124,7 +124,7 @@ LEXFLOATCLIENT_API int LF_CC SetPermissionFlag(uint32_t flags);
     PARAMETERS:
     * callback - name of the callback function
 
-    RETURN CODES: LF_OK, LF_E_PRODUCT_ID
+    RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_INVALID_PERMISSION_FLAG
 */
 LEXFLOATCLIENT_API int LF_CC SetFloatingLicenseCallback(CallbackType callback);
 
