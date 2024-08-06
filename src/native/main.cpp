@@ -40,6 +40,25 @@ void floatingLicenseCallback(uint32_t status)
     LicenseCallbacks[HostProductId]->Queue();
 }
 
+Napi::Value getHostConfig(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetHostConfigInternal(arg0, length));
+}
+
 Napi::Value setHostProductId(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -485,6 +504,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetHostLicenseMetadata"] = Napi::Function::New(env, getHostLicenseMetadata);
     exports["GetHostLicenseMeterAttribute"] = Napi::Function::New(env, getHostLicenseMeterAttribute);
     exports["GetHostLicenseExpiryDate"] = Napi::Function::New(env, getHostLicenseExpiryDate);
+    exports["GetHostConfig"] = Napi::Function::New(env, getHostConfig);
     exports["GetFloatingClientMeterAttributeUses"] = Napi::Function::New(env, getFloatingClientMeterAttributeUses);
     exports["GetFloatingClientMetadata"] = Napi::Function::New(env, getFloatingClientMetadata);
     exports["GetFloatingClientLibraryVersion"] = Napi::Function::New(env, getFloatingClientLibraryVersion);

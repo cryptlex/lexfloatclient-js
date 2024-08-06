@@ -60,6 +60,18 @@ export class HostProductVersionFeatureFlag {
 		this.data = data;
 	}
 }
+
+/**
+ * @class HostConfig
+ * @constructor
+ */
+export class HostConfig {
+    maxOfflineLeaseDuration: number;
+	constructor(maxOfflineLeaseDuration: number){
+		this.maxOfflineLeaseDuration = maxOfflineLeaseDuration;
+	}
+};
+
 /**
  * @class LexFloatClient
  */
@@ -268,6 +280,32 @@ export class LexFloatClient {
 			default:
 				throw new LexFloatClientException(status);
 		}
+	}
+
+	/**
+	 *  This function sends a network request to LexFloatServer to get the configuration details.
+	 * 
+	 * @return Configuration details
+	 * @throws {LexActivatorException}
+	 */
+	static GetHostConfig(): HostConfig | null {
+		const array = new Uint8Array(1024);
+		const status = LexFloatClientNative.GetHostConfig(array, array.length)
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		let hostConfigObject;
+		try {
+			hostConfigObject = JSON.parse(arrayToString(array));
+		} catch {
+			hostConfigObject = {};
+		}
+		let hostConfig = null;
+		if (Object.keys(hostConfigObject).length > 0) {
+			hostConfig = new HostConfig(hostConfigObject.maxOfflineLeaseDuration);
+			return hostConfig;
+		}
+		return hostConfig;
 	}
 
 	/**
