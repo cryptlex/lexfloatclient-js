@@ -58,6 +58,23 @@ Napi::Value setHostProductId(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetHostProductId(arg0.c_str()));
 }
 
+Napi::Value setPermissionFlag(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, SetPermissionFlag(arg0));
+}
+
 Napi::Value setHostUrl(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -459,6 +476,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     exports["SetHostProductId"] = Napi::Function::New(env, setHostProductId);
     exports["SetHostUrl"] = Napi::Function::New(env, setHostUrl);
+    exports["SetPermissionFlag"] = Napi::Function::New(env, setPermissionFlag);
     exports["SetFloatingLicenseCallback"] = Napi::Function::New(env, setFloatingLicenseCallback);
     exports["SetFloatingClientMetadata"] = Napi::Function::New(env, setFloatingClientMetadata);
     exports["GetHostProductVersionName"] = Napi::Function::New(env, getHostProductVersionName);

@@ -30,6 +30,14 @@ export class HostLicenseMeterAttribute {
 }
 
 /**
+ * @class PermissionFlags
+ * @constructor
+ */
+export const PermissionFlags = {
+	'LF_USER': 10,
+	'LF_ALL_USERS': 11,
+};
+/**
  * @class HostProductVersionFeatureFlag
  * @constructor
  */
@@ -123,6 +131,25 @@ export class LexFloatClient {
 	 */
 	static SetFloatingClientMetadata(key: string, value: string): void {
 		const status = LexFloatClientNative.SetFloatingClientMetadata(key, value);
+		if (LexFloatStatusCodes.LF_OK != status) {
+			throw new LexFloatClientException(status);
+		}
+	}
+	
+	/**
+	 * Sets the permission flag for your application.
+	 *
+	 * This function must be called on every start of your program after the SetHostProductId()
+	 * function if the application allows borrowing of licenses or system-wide activation.
+	 *
+	 * @param {PermissionFlags} flag - depending on your application's requirements, choose one of 
+	 * the following values: LF_USER, LF_ALL_USERS.
+	 *  - LF_USER: This flag indicates that the application does not require admin or root permissions to run.
+	 *  - LF_ALL_USERS: This flag is specifically designed for Windows and should be used for system-wide activations.
+	 * @throws {LexFloatClientException} 
+	 */
+	static SetPermissionFlag(flag: typeof PermissionFlags[keyof typeof PermissionFlags]): void {
+		const status = LexFloatClientNative.SetPermissionFlag(flag);
 		if (LexFloatStatusCodes.LF_OK != status) {
 			throw new LexFloatClientException(status);
 		}
