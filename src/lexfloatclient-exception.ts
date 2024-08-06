@@ -115,6 +115,9 @@ export class LexFloatClientException extends Error {
 			case LexFloatStatusCodes.LF_E_MACHINE_FINGERPRINT:
 				message = "Machine fingerprint has changed since activation.";
 				break;
+			case LexFloatStatusCodes.LF_E_PROXY_NOT_TRUSTED:
+				message = "Request blocked due to untrusted proxy.";
+				break;
 			default:
 				message = 'Unknown error!';
 		}
