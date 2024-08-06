@@ -108,10 +108,52 @@ export const LexFloatStatusCodes = {
 	 */
 	LF_E_FEATURE_FLAG_NOT_FOUND: 58,
 
+    /**
+     * Insufficient system permissions.
+    */
+    LF_E_SYSTEM_PERMISSION: 59,
+
 	/**
 	 * IP address is not allowed.
 	 */
 	LF_E_IP: 60,
+
+    /**
+     * Invalid permission flag.
+     */
+    LF_E_INVALID_PERMISSION_FLAG: 61,
+
+    /**
+     * Offline floating license is not allowed for per-instance leasing strategy.
+     */
+    LF_E_OFFLINE_FLOATING_LICENSE_NOT_ALLOWED: 62,
+
+    /**
+     * Maximum offline lease duration exeeded.
+     */
+
+    LF_E_MAX_OFFLINE_LEASE_DURATION_EXCEEDED: 63,
+
+    /**
+     * Allowed offline floating clients limit reached.
+     */
+    LF_E_ALLOWED_OFFLINE_FLOATING_CLIENTS_LIMIT_REACHED: 64,
+
+    /**
+     * Fingerprint couldn't be generated because Windows Management Instrumentation (WMI) service has been disabled. 
+     * This error is specific to Windows only.
+     */
+    LF_E_WMIC : 65,
+
+    /**
+     * Machine fingerprint has changed since activation.
+     */
+    LF_E_MACHINE_FINGERPRINT : 66,
+
+	/**
+     * Request blocked due to untrusted proxy.
+     */
+    LF_E_PROXY_NOT_TRUSTED : 67,
 
 	/**
 	 * Client error.

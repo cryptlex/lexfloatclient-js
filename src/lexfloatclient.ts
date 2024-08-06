@@ -30,6 +30,14 @@ export class HostLicenseMeterAttribute {
 }
 
 /**
+ * @class PermissionFlags
+ * @constructor
+ */
+export const PermissionFlags = {
+	'LF_USER': 10,
+	'LF_ALL_USERS': 11,
+};
+/**
  * @class HostProductVersionFeatureFlag
  * @constructor
  */
@@ -52,6 +60,18 @@ export class HostProductVersionFeatureFlag {
 		this.data = data;
 	}
 }
+
+/**
+ * @class HostConfig
+ * @constructor
+ */
+export class HostConfig {
+    maxOfflineLeaseDuration: number;
+	constructor(maxOfflineLeaseDuration: number){
+		this.maxOfflineLeaseDuration = maxOfflineLeaseDuration;
+	}
+};
+
 /**
  * @class LexFloatClient
  */
@@ -127,6 +147,25 @@ export class LexFloatClient {
 			throw new LexFloatClientException(status);
 		}
 	}
+	
+	/**
+	 * Sets the permission flag for your application.
+	 *
+	 * This function must be called on every start of your program after the SetHostProductId()
+	 * function if the application allows borrowing of licenses or system-wide activation.
+	 *
+	 * @param {PermissionFlags} flag - depending on your application's requirements, choose one of 
+	 * the following values: LF_USER, LF_ALL_USERS.
+	 *  - LF_USER: This flag indicates that the application does not require admin or root permissions to run.
+	 *  - LF_ALL_USERS: This flag is specifically designed for Windows and should be used for system-wide activations.
+	 * @throws {LexFloatClientException} 
+	 */
+	static SetPermissionFlag(flag: typeof PermissionFlags[keyof typeof PermissionFlags]): void {
+		const status = LexFloatClientNative.SetPermissionFlag(flag);
+		if (LexFloatStatusCodes.LF_OK != status) {
+			throw new LexFloatClientException(status);
+		}
+	}
 
 	/**
 	 * Gets the product version name.
@@ -150,6 +189,20 @@ export class LexFloatClient {
 	static GetHostProductVersionDisplayName(): string {
 		const array = new Uint8Array(256);
 		const status = LexFloatClientNative.GetHostProductVersionDisplayName(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
+	
+	/**
+	 * Gets the mode of the floating license (online or offline).
+	 * @returns floating license mode.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingLicenseMode(): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetFloatingLicenseMode(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
 		}
@@ -230,6 +283,32 @@ export class LexFloatClient {
 	}
 
 	/**
+	 *  This function sends a network request to LexFloatServer to get the configuration details.
+	 * 
+	 * @return Configuration details
+	 * @throws {LexActivatorException}
+	 */
+	static GetHostConfig(): HostConfig | null {
+		const array = new Uint8Array(1024);
+		const status = LexFloatClientNative.GetHostConfig(array, array.length)
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		let hostConfigObject;
+		try {
+			hostConfigObject = JSON.parse(arrayToString(array));
+		} catch {
+			hostConfigObject = {};
+		}
+		let hostConfig = null;
+		if (Object.keys(hostConfigObject).length > 0) {
+			hostConfig = new HostConfig(hostConfigObject.maxOfflineLeaseDuration);
+			return hostConfig;
+		}
+		return hostConfig;
+	}
+
+	/**
 	 * Gets the meter attribute uses consumed by the floating client.
 	 *
 	 * @param {string} name name of the meter attribute
@@ -245,6 +324,22 @@ export class LexFloatClient {
 		throw new LexFloatClientException(status);
 	}
 
+
+	/**
+	 * Gets the value of the floating client metadata.
+	 *
+	 * @param {string} key key of the metadata field whose value you want to get
+	 * @return Returns the metadata key value
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingClientMetadata(key: string): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetFloatingClientMetadata(key, array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
 	/**
 	 * Gets the library version.
 	 * @returns Returns the library version.
@@ -266,6 +361,20 @@ export class LexFloatClient {
 	 */
 	static RequestFloatingLicense(): void {
 		const status = LexFloatClientNative.RequestFloatingLicense();
+		if (LexFloatStatusCodes.LF_OK != status) {
+			throw new LexFloatClientException(status);
+		}
+	}
+	
+	/**
+	 * Sends the request to lease the license from the LexFloatServer for offline usage.
+	 * The maximum value of lease duration is configured in the config.yml of LexFloatServer 
+	 *
+	 * @param {number} leaseDuration value of the lease duration.
+	 * @throws {LexFloatClientException}
+	 */
+	static RequestOfflineFloatingLicense(leaseDuration: number): void {
+		const status = LexFloatClientNative.RequestOfflineFloatingLicense(leaseDuration);
 		if (LexFloatStatusCodes.LF_OK != status) {
 			throw new LexFloatClientException(status);
 		}
@@ -301,6 +410,23 @@ export class LexFloatClient {
 				return false;
 			case LexFloatStatusCodes.LF_FAIL:
 				return false;
+			default:
+				throw new LexFloatClientException(status);
+		}
+	}
+
+	/**
+	 * Gets the lease expiry date timestamp of the floating client.
+	 *
+	 * @return Returns the timestamp
+	 * @throws {LexFloatClientException}
+	 */
+	static GetFloatingClientLeaseExpiryDate(): number {
+		const expiryDate = new Uint32Array(1);
+		const status = LexFloatClientNative.GetFloatingClientLeaseExpiryDate(expiryDate);
+		switch (status) {
+			case LexFloatStatusCodes.LF_OK:
+				return expiryDate[0] ? expiryDate[0] : 0;
 			default:
 				throw new LexFloatClientException(status);
 		}
