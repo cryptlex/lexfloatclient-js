@@ -413,6 +413,23 @@ Napi::Value getFloatingLicenseMode(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetFloatingLicenseMode(arg0, length));
 }
 
+Napi::Value requestOfflineFloatingLicense(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, RequestOfflineFloatingLicense(arg0));
+}
+
 Napi::Value requestFloatingLicense(const Napi::CallbackInfo &info)
 {
     return Napi::Number::New(info.Env(), RequestFloatingLicense());
@@ -509,6 +526,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetFloatingClientMetadata"] = Napi::Function::New(env, getFloatingClientMetadata);
     exports["GetFloatingClientLibraryVersion"] = Napi::Function::New(env, getFloatingClientLibraryVersion);
     exports["RequestFloatingLicense"] = Napi::Function::New(env, requestFloatingLicense);
+    exports["RequestOfflineFloatingLicense"] = Napi::Function::New(env, requestOfflineFloatingLicense);
     exports["GetFloatingLicenseMode"] = Napi::Function::New(env, getFloatingLicenseMode);
     exports["DropFloatingLicense"] = Napi::Function::New(env, dropFloatingLicense);
     exports["HasFloatingLicense"] = Napi::Function::New(env, hasFloatingLicense);
