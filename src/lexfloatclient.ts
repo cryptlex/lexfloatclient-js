@@ -333,7 +333,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetFloatingClientMetadata(key: string): string {
-		const array = new Uint8Array(256);
+		const array = new Uint8Array(4096);
 		const status = LexFloatClientNative.GetFloatingClientMetadata(key, array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
