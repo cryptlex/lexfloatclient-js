@@ -93,6 +93,31 @@ export class LexFloatClientException extends Error {
 			case LexFloatStatusCodes.LF_E_SERVER_LICENSE_GRACE_PERIOD_OVER:
 				message = "The grace period for server license is over.";
 				break;
+			case LexFloatStatusCodes.LF_E_SYSTEM_PERMISSION:
+				message = "Insufficient system permissions.";
+				break;
+			case LexFloatStatusCodes.LF_E_INVALID_PERMISSION_FLAG:
+				message = "Invalid permission flag.";
+				break;
+			
+			case LexFloatStatusCodes.LF_E_OFFLINE_FLOATING_LICENSE_NOT_ALLOWED:
+				message = "Offline floating license is not allowed for per-instance leasing strategy.";
+				break;
+			case LexFloatStatusCodes.LF_E_MAX_OFFLINE_LEASE_DURATION_EXCEEDED:
+				message = "Maximum offline lease duration exeeded.";
+				break;
+			case LexFloatStatusCodes.LF_E_ALLOWED_OFFLINE_FLOATING_CLIENTS_LIMIT_REACHED:
+				message = "Allowed offline floating clients limit reached.";
+				break;
+			case LexFloatStatusCodes.LF_E_WMIC:
+				message = "Fingerprint couldn't be generated because Windows Management Instrumentation (WMI) service has been disabled. This error is specific to Windows only";
+				break;
+			case LexFloatStatusCodes.LF_E_MACHINE_FINGERPRINT:
+				message = "Machine fingerprint has changed since activation.";
+				break;
+			case LexFloatStatusCodes.LF_E_PROXY_NOT_TRUSTED:
+				message = "Request blocked due to untrusted proxy.";
+				break;
 			default:
 				message = 'Unknown error!';
 		}
