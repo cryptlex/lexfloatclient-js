@@ -1,4 +1,4 @@
-name: Build @cryptlex/lexactivator package
+name: Build @cryptlex/lexfloatclient package
 
 on:
   workflow_dispatch:
