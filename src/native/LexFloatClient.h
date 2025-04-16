@@ -187,6 +187,67 @@ LEXFLOATCLIENT_API int LF_CC GetHostProductVersionDisplayName(STRTYPE displayNam
 LEXFLOATCLIENT_API int LF_CC GetHostProductVersionFeatureFlag(CSTRTYPE name, uint32_t *enabled, STRTYPE data, uint32_t length);
 
 /*
+    FUNCTION: GetHostLicenseEntitlementSetName()
+
+    PURPOSE: Gets the name of the entitlement set associated with the LexFloatServer license.
+
+    PARAMETERS:
+    * namePtr - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the namePtr parameter
+
+    RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_NO_LICENSE, LF_E_BUFFER_SIZE, LF_E_ENTITLEMENT_SET_NOT_LINKED
+*/
+LEXFLOATCLIENT_API int LF_CC GetHostLicenseEntitlementSetName(STRTYPE namePtr, uint32_t length);
+
+/*
+    FUNCTION: GetHostLicenseEntitlementSetDisplayName()
+
+    PURPOSE: Gets the display name of the entitlement set associated with the LexFloatServer license.
+
+    PARAMETERS:
+    * displayNamePtr - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the displayNamePtr parameter
+
+    RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_NO_LICENSE, LF_E_BUFFER_SIZE, LF_E_ENTITLEMENT_SET_NOT_LINKED
+*/
+LEXFLOATCLIENT_API int LF_CC GetHostLicenseEntitlementSetDisplayName(STRTYPE displayNamePtr, uint32_t length);
+
+/*
+    FUNCTION: GetHostFeatureEntitlementsInternal()
+
+    PURPOSE: Gets the feature entitlements associated with the LexFloatServer license.
+
+    Feature entitlements can be linked directly to a license (license feature entitlements) 
+    or via entitlement sets. If a feature entitlement is defined in both, the value from 
+    the license feature entitlement takes precedence, overriding the entitlement set value.
+
+    PARAMETERS:
+    * hostFeatureEntitlementsPtr - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the hostFeatureEntitlementsPtr parameter
+
+    RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_NO_LICENSE, LF_E_BUFFER_SIZE
+*/
+LEXFLOATCLIENT_API int LF_CC GetHostFeatureEntitlementsInternal(STRTYPE hostFeatureEntitlementsPtr, uint32_t length);
+
+/*
+    FUNCTION: GetHostFeatureEntitlementInternal()
+
+    PURPOSE: Gets the feature entitlement associated with the LexFloatServer license.
+
+    Feature entitlements can be linked directly to a license (license feature entitlements) 
+    or via entitlement sets. If a feature entitlement is defined in both, the value from 
+    the license feature entitlement takes precedence, overriding the entitlement set value.
+
+    PARAMETERS:
+    * featureNamePtr - name of the feature
+    * hostFeatureEntitlementPtr - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the hostFeatureEntitlementPtr parameter
+
+    RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_NO_LICENSE, LF_E_BUFFER_SIZE, LF_E_FEATURE_ENTITLEMENT_NOT_FOUND
+*/
+LEXFLOATCLIENT_API int LF_CC GetHostFeatureEntitlementInternal(CSTRTYPE featureNamePtr, STRTYPE hostFeatureEntitlementPtr, uint32_t length);
+
+/*
     FUNCTION: GetHostLicenseMetadata()
 
     PURPOSE: Get the value of the license metadata field associated with the LexFloatServer license.
