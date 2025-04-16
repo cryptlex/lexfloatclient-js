@@ -62,6 +62,22 @@ export class HostProductVersionFeatureFlag {
 }
 
 /**
+ * @class HostFeatureEntitlement
+ * @constructor
+ * @property {string} featureName The name of the feature.
+ * @property {string} value The value of the feature.
+ */
+export class HostFeatureEntitlement {
+	featureName: string;
+	value: string; 
+
+	constructor(featureName: string, value: string) {
+		this.featureName = featureName;
+		this.value = value;
+	}
+}
+
+/**
  * @class HostConfig
  * @constructor
  */
@@ -169,6 +185,7 @@ export class LexFloatClient {
 
 	/**
 	 * Gets the product version name.
+	 * @deprecated This function is deprecated. Use GetHostLicenseEntitlementSetName() instead.
 	 * @returns Returns the product version name.
 	 * @throws {LexFloatClientException}
 	 */
@@ -183,6 +200,7 @@ export class LexFloatClient {
 
 	/**
 	 * Gets the product version display name.
+	 * @deprecated This function is deprecated. Use GetHostLicenseEntitlementSetDisplayName() instead.
 	 * @returns Returns the product version display name.
 	 * @throws {LexFloatClientException}
 	 */
@@ -211,6 +229,7 @@ export class LexFloatClient {
 
 	/**
 	 * Gets the product version feature flag.
+	 * @deprecated This function is deprecated. Use GetHostFeatureEntitlement() instead.
 	 * @param {string} name 
 	 * @returns Returns the product version feature flag.
 	 * @throws {LexFloatClientException}
@@ -225,6 +244,63 @@ export class LexFloatClient {
 			default:
 				throw new LexFloatClientException(status);
 		}
+	}
+
+	/**
+	 * Gets the name of the entitlement set associated with the LexFloatServer license.
+	 * @return {string} Returns the host license entitlement set name.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetHostLicenseEntitlementSetName(): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetHostLicenseEntitlementSetName(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**	
+	 * Gets the display name of the entitlement set associated with the LexFloatServer license.
+	 * @return {string} Returns the host license entitlement set display name.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetHostLicenseEntitlementSetDisplayName(): string {
+		const array = new Uint8Array(256);
+		const status = LexFloatClientNative.GetHostLicenseEntitlementSetDisplayName(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the feature entitlements associated with the LexFloatServer license.
+	 * @return {HostFeatureEntitlement[]} Returns the host license feature entitlements.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetHostFeatureEntitlements(): HostFeatureEntitlement[] {
+		const array = new Uint8Array(4096);
+		const status = LexFloatClientNative.GetHostFeatureEntitlements(array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return JSON.parse(arrayToString(array)) || [];
+	}
+
+	/**
+	 * Gets the feature entitlement associated with the LexFloatServer license.
+	 * @param {string} featureName The name of the feature.
+	 * @return {HostFeatureEntitlement} Returns the host license feature entitlement.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetHostFeatureEntitlement(featureName: string): HostFeatureEntitlement {
+		const array = new Uint8Array(1024);
+		const status = LexFloatClientNative.GetHostFeatureEntitlement(featureName, array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return JSON.parse(arrayToString(array)) || {};
 	}
 
 	/**

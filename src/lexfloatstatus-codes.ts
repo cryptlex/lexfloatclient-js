@@ -155,6 +155,16 @@ export const LexFloatStatusCodes = {
      */
     LF_E_PROXY_NOT_TRUSTED : 67,
 
+    /**
+     * No entitlement set is linked to the license.
+     */
+    LF_E_ENTITLEMENT_SET_NOT_LINKED : 68,
+
+    /**
+     * The feature entitlement does not exist.
+     */
+    LF_E_FEATURE_ENTITLEMENT_NOT_FOUND : 69,
+
 	/**
 	 * Client error.
 	 */
