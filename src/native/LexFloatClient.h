@@ -222,12 +222,12 @@ LEXFLOATCLIENT_API int LF_CC GetHostLicenseEntitlementSetDisplayName(STRTYPE dis
     the license feature entitlement takes precedence, overriding the entitlement set value.
 
     PARAMETERS:
-    * hostFeatureEntitlements - pointer to a buffer that receives the value of the string
-    * length - size of the buffer pointed to by the hostFeatureEntitlements parameter
+    * hostFeatureEntitlementsJson - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the hostFeatureEntitlementsJson parameter
 
     RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_NO_LICENSE, LF_E_BUFFER_SIZE
 */
-LEXFLOATCLIENT_API int LF_CC GetHostFeatureEntitlementsInternal(STRTYPE hostFeatureEntitlements, uint32_t length);
+LEXFLOATCLIENT_API int LF_CC GetHostFeatureEntitlementsInternal(STRTYPE hostFeatureEntitlementsJson, uint32_t length);
 
 /*
     FUNCTION: GetHostFeatureEntitlementInternal()
@@ -240,12 +240,12 @@ LEXFLOATCLIENT_API int LF_CC GetHostFeatureEntitlementsInternal(STRTYPE hostFeat
 
     PARAMETERS:
     * featureName - name of the feature
-    * hostFeatureEntitlement - pointer to a buffer that receives the value of the string
-    * length - size of the buffer pointed to by the hostFeatureEntitlement parameter
+    * hostFeatureEntitlementJson - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the hostFeatureEntitlementJson parameter
 
     RETURN CODES: LF_OK, LF_E_PRODUCT_ID, LF_E_NO_LICENSE, LF_E_BUFFER_SIZE, LF_E_FEATURE_ENTITLEMENT_NOT_FOUND
 */
-LEXFLOATCLIENT_API int LF_CC GetHostFeatureEntitlementInternal(CSTRTYPE featureName, STRTYPE hostFeatureEntitlement, uint32_t length);
+LEXFLOATCLIENT_API int LF_CC GetHostFeatureEntitlementInternal(CSTRTYPE featureName, STRTYPE hostFeatureEntitlementJson, uint32_t length);
 
 /*
     FUNCTION: GetHostLicenseMetadata()
