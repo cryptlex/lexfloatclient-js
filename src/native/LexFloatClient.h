@@ -150,6 +150,8 @@ LEXFLOATCLIENT_API int LF_CC SetFloatingClientMetadata(CSTRTYPE key, CSTRTYPE va
 
     PURPOSE: Gets the product version name.
 
+    DEPRECATED: This function is deprecated. Use GetHostLicenseEntitlementSetName() instead.
+
     PARAMETERS:
     * name - pointer to a buffer that receives the value of the string
     * length - size of the buffer pointed to by the name parameter
@@ -163,6 +165,8 @@ LEXFLOATCLIENT_API int LF_CC GetHostProductVersionName(STRTYPE name, uint32_t le
 
     PURPOSE: Gets the product version display name.
 
+    DEPRECATED: This function is deprecated. Use GetHostLicenseEntitlementSetDisplayName() instead.
+
     PARAMETERS:
     * displayName - pointer to a buffer that receives the value of the string
     * length - size of the buffer pointed to by the displayName parameter
@@ -175,6 +179,8 @@ LEXFLOATCLIENT_API int LF_CC GetHostProductVersionDisplayName(STRTYPE displayNam
     FUNCTION: GetHostProductVersionFeatureFlag()
 
     PURPOSE: Gets the product version feature flag.
+
+    DEPRECATED: This function is deprecated. Use GetHostFeatureEntitlement() instead.
 
     PARAMETERS:
     * name - name of the feature flag
