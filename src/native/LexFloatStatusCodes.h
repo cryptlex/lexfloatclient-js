@@ -147,35 +147,30 @@ enum LexFloatStatusCodes
 
     /*
         CODE: LF_E_INVALID_PERMISSION_FLAG
-
         MESSAGE: Invalid permission flag.
     */
     LF_E_INVALID_PERMISSION_FLAG = 61,
 
     /*
         CODE: LF_E_OFFLINE_FLOATING_LICENSE_NOT_ALLOWED
-
         MESSAGE: Offline floating license is not allowed for per-instance leasing strategy.
     */
     LF_E_OFFLINE_FLOATING_LICENSE_NOT_ALLOWED = 62,
 
     /*
         CODE: LF_E_MAX_OFFLINE_LEASE_DURATION_EXCEEDED
-
         MESSAGE: Maximum offline lease duration exeeded.
     */
     LF_E_MAX_OFFLINE_LEASE_DURATION_EXCEEDED = 63,
 
     /*
         CODE: LF_E_ALLOWED_OFFLINE_FLOATING_CLIENTS_LIMIT_REACHED
-
         MESSAGE: Allowed offline floating clients limit reached.
     */
     LF_E_ALLOWED_OFFLINE_FLOATING_CLIENTS_LIMIT_REACHED = 64,
     
     /*
         CODE: LF_E_WMIC
-
         MESSAGE: Fingerprint couldn't be generated because Windows Management
         Instrumentation (WMI) service has been disabled. This error is specific
         to Windows only.
@@ -184,17 +179,27 @@ enum LexFloatStatusCodes
     
     /*
         CODE: LF_E_MACHINE_FINGERPRINT
-
         MESSAGE: Machine fingerprint has changed since activation.
     */
     LF_E_MACHINE_FINGERPRINT = 66,
 
     /*
         CODE: LF_E_PROXY_NOT_TRUSTED
-        
         MESSAGE: Request blocked due to untrusted proxy.
     */
     LF_E_PROXY_NOT_TRUSTED = 67,
+
+    /*
+        CODE: LF_E_ENTITLEMENT_SET_NOT_LINKED
+        MESSAGE: No entitlement set is linked to the license.
+    */
+    LF_E_ENTITLEMENT_SET_NOT_LINKED = 68,
+
+    /*
+        CODE: LF_E_FEATURE_ENTITLEMENT_NOT_FOUND
+        MESSAGE: The feature entitlement does not exist.
+    */
+    LF_E_FEATURE_ENTITLEMENT_NOT_FOUND = 69,
 
     /*
         CODE: LF_E_CLIENT

@@ -99,7 +99,6 @@ export class LexFloatClientException extends Error {
 			case LexFloatStatusCodes.LF_E_INVALID_PERMISSION_FLAG:
 				message = "Invalid permission flag.";
 				break;
-			
 			case LexFloatStatusCodes.LF_E_OFFLINE_FLOATING_LICENSE_NOT_ALLOWED:
 				message = "Offline floating license is not allowed for per-instance leasing strategy.";
 				break;
@@ -117,6 +116,12 @@ export class LexFloatClientException extends Error {
 				break;
 			case LexFloatStatusCodes.LF_E_PROXY_NOT_TRUSTED:
 				message = "Request blocked due to untrusted proxy.";
+				break;
+			case LexFloatStatusCodes.LF_E_ENTITLEMENT_SET_NOT_LINKED:
+				message = "No entitlement set is linked to the license.";
+				break;
+			case LexFloatStatusCodes.LF_E_FEATURE_ENTITLEMENT_NOT_FOUND:
+				message = "The feature entitlement does not exist.";
 				break;
 			default:
 				message = 'Unknown error!';
