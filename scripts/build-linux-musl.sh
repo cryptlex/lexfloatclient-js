@@ -3,7 +3,6 @@
 echo "http://dl-cdn.alpinelinux.org/alpine/v3.12/main" > /etc/apk/repositories
 echo "http://dl-cdn.alpinelinux.org/alpine/v3.12/community" >> /etc/apk/repositories
 
-# Install Node.js 12 and required dependencies
 # Install Node.js 12 and essential tools
 apk update
 apk add --no-cache \
