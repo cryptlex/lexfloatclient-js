@@ -307,6 +307,23 @@ export class LexFloatClient {
 	}
 
 	/**
+	 * Gets the value of the product metadata.
+	 *
+	 *
+	 * @param {string} key key of the metadata field whose value you want to get
+	 * @return Returns the metadata key value
+	 * @throws {LexFloatClientException}
+	 */
+	static GetHostProductMetadata(key: string): string {
+		const array = new Uint8Array(4096);
+		const status = LexFloatClientNative.GetHostProductMetadata(key, array, array.length);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
 	 * Get the value of the license metadata field associated with the
 	 * LexFloatServer license key.
 	 *
