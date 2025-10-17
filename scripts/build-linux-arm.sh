@@ -8,7 +8,7 @@ trap 'echo "\"${last_command}\" finished with exit code $?."' EXIT
 source ~/.bashrc
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v4.12.0";
+VERSION="v4.12.1";
 wget ${URL}${VERSION}/LexFloatClient-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexFloatClient-Static-Linux.zip -d ./tmp/linux
