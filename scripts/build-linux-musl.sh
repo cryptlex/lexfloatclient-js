@@ -23,7 +23,7 @@ tar -xzf npm.tgz -C .npm-upgrade --strip-components=1
 node .npm-upgrade/bin/npm-cli.js install -g .npm-upgrade
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v4.12.1";
+VERSION="v4.12.2";
 wget ${URL}${VERSION}/LexFloatClient-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexFloatClient-Static-Linux.zip -d ./tmp/linux
