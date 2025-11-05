@@ -1,24 +1,14 @@
-#ifndef SIZE_MAX
-#define SIZE_MAX ((size_t)(-1))
-#endif
+#include <mutex>
 #include "napi.h"
 
-class CallbackWrapper : public Napi::AsyncWorker
-{
-public:
-    CallbackWrapper(Napi::Function &callback) : Napi::AsyncWorker(callback)
-    {
-    }
-    uint32_t status;
+using TSFN_t = Napi::ThreadSafeFunction;
 
-private:
-    void Execute()
-    {
-    }
+std::mutex licenseCallbacksMutex;
 
-    void OnOK()
+inline auto callback = []( Napi::Env env, Napi::Function jsCallback, uint32_t* status ) {
+    if(env != nullptr)
     {
-        Napi::HandleScope scope(Env());
-        Callback().Call({Napi::Number::New(Env(), status)});
+        jsCallback.Call( {Napi::Number::New( env, *status )} );
     }
+    delete status;
 };

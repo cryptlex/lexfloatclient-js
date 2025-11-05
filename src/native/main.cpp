@@ -21,7 +21,7 @@ const char *MISSING_PRODUCT_ID = "Product id not set";
 
 STRING HostProductId;
 
-map<STRING, CallbackWrapper*> LicenseCallbacks;
+map<STRING, TSFN_t> LicenseCallbacks;
 
 STRING toEncodedString(Napi::String input)
 {
@@ -36,8 +36,21 @@ STRING toEncodedString(Napi::String input)
 
 void floatingLicenseCallback(uint32_t status)
 {
-    LicenseCallbacks[HostProductId]->status = status;
-    LicenseCallbacks[HostProductId]->Queue();
+    lock_guard<mutex> lk(licenseCallbacksMutex);
+    auto it = LicenseCallbacks.find(HostProductId);
+    if(it == LicenseCallbacks.end())
+    {
+        return;
+    }
+
+    TSFN_t tsfn = it->second;
+
+    uint32_t *data = new uint32_t(status);
+
+    napi_status s = tsfn.NonBlockingCall(data, callback);
+    if (s != napi_ok) {
+        delete data;
+    }
 }
 
 Napi::Value getHostConfig(const Napi::CallbackInfo &info)
@@ -130,9 +143,18 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
         Napi::Error::New(env, MISSING_PRODUCT_ID).ThrowAsJavaScriptException();
         return env.Null();
     }
-    LicenseCallbacks[HostProductId] = new CallbackWrapper(callback);
-    LicenseCallbacks[HostProductId]->SuppressDestruct();
-    return Napi::Number::New(env, SetFloatingLicenseCallback(floatingLicenseCallback));
+
+    lock_guard<mutex> lk(licenseCallbacksMutex);
+    auto existing = LicenseCallbacks.find(HostProductId);
+    if (existing != LicenseCallbacks.end())
+    {
+        existing->second.Release();
+        LicenseCallbacks.erase(existing);
+    }
+
+    TSFN_t tsfn = TSFN_t::New(env, callback, "FloatingLicenseCallback", 0, 1);
+    LicenseCallbacks.emplace(HostProductId, tsfn);
+    return Napi::Number::New(env, SetFloatingLicenseCallback(&floatingLicenseCallback));
 }
 
 Napi::Value setFloatingClientMetadata(const Napi::CallbackInfo &info)
