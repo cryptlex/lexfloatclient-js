@@ -36,7 +36,6 @@ STRING toEncodedString(Napi::String input)
 
 void floatingLicenseCallback(uint32_t status)
 {
-    lock_guard<mutex> lk(licenseCallbacksMutex);
     auto it = LicenseCallbacks.find(HostProductId);
     if(it == LicenseCallbacks.end())
     {
@@ -144,15 +143,14 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
         return env.Null();
     }
 
-    lock_guard<mutex> lk(licenseCallbacksMutex);
     auto existing = LicenseCallbacks.find(HostProductId);
     if (existing != LicenseCallbacks.end())
     {
         existing->second.Release();
         LicenseCallbacks.erase(existing);
     }
-
-    TSFN_t tsfn = TSFN_t::New(env, callback, "FloatingLicenseCallback", 0, 1);
+    // third argument is max queue size (0 is unbounded), fourth is initial thread count
+    TSFN_t tsfn = TSFN_t::New(env, callback, "FloatingClientCallback", 0, 1);
     LicenseCallbacks.emplace(HostProductId, tsfn);
     return Napi::Number::New(env, SetFloatingLicenseCallback(&floatingLicenseCallback));
 }

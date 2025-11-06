@@ -1,14 +1,10 @@
-#include <mutex>
 #include "napi.h"
 
-using TSFN_t = Napi::ThreadSafeFunction;
+typedef Napi::ThreadSafeFunction TSFN_t;
 
-std::mutex licenseCallbacksMutex;
-
-inline auto callback = []( Napi::Env env, Napi::Function jsCallback, uint32_t* status ) {
-    if(env != nullptr)
-    {
-        jsCallback.Call( {Napi::Number::New( env, *status )} );
+static void callback(Napi::Env env, Napi::Function jsCallback, uint32_t* status) {
+    if (env != nullptr) {
+        jsCallback.Call({ Napi::Number::New(env, *status) });
     }
     delete status;
-};
+}
