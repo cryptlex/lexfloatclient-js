@@ -44,11 +44,11 @@ void floatingLicenseCallback(uint32_t status)
 
     TSFN_t tsfn = it->second;
 
-    uint32_t *data = new uint32_t(status);
+    uint32_t *licenseStatus = new uint32_t(status);
 
-    napi_status s = tsfn.NonBlockingCall(data, callback);
+    napi_status s = tsfn.NonBlockingCall(licenseStatus, callback);
     if (s != napi_ok) {
-        delete data;
+        delete licenseStatus;
     }
 }
 
@@ -146,7 +146,7 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
     auto existing = LicenseCallbacks.find(HostProductId);
     if (existing != LicenseCallbacks.end())
     {
-        existing->second.Release();
+        existing->second.Abort();
         LicenseCallbacks.erase(existing);
     }
     // third argument is max queue size (0 is unbounded), fourth is initial thread count
