@@ -1,24 +1,10 @@
-#ifndef SIZE_MAX
-#define SIZE_MAX ((size_t)(-1))
-#endif
 #include "napi.h"
 
-class CallbackWrapper : public Napi::AsyncWorker
-{
-public:
-    CallbackWrapper(Napi::Function &callback) : Napi::AsyncWorker(callback)
-    {
-    }
-    uint32_t status;
+typedef Napi::ThreadSafeFunction TSFN_t;
 
-private:
-    void Execute()
-    {
+static void callback(Napi::Env env, Napi::Function jsCallback, uint32_t* status) {
+    if (env != nullptr) {
+        jsCallback.Call({ Napi::Number::New(env, *status) });
     }
-
-    void OnOK()
-    {
-        Napi::HandleScope scope(Env());
-        Callback().Call({Napi::Number::New(Env(), status)});
-    }
-};
+    delete status;
+}

@@ -21,7 +21,7 @@ const char *MISSING_PRODUCT_ID = "Product id not set";
 
 STRING HostProductId;
 
-map<STRING, CallbackWrapper*> LicenseCallbacks;
+map<STRING, TSFN_t> LicenseCallbacks;
 
 STRING toEncodedString(Napi::String input)
 {
@@ -36,8 +36,20 @@ STRING toEncodedString(Napi::String input)
 
 void floatingLicenseCallback(uint32_t status)
 {
-    LicenseCallbacks[HostProductId]->status = status;
-    LicenseCallbacks[HostProductId]->Queue();
+    auto it = LicenseCallbacks.find(HostProductId);
+    if(it == LicenseCallbacks.end())
+    {
+        return;
+    }
+
+    TSFN_t tsfn = it->second;
+
+    uint32_t *licenseStatus = new uint32_t(status);
+
+    napi_status s = tsfn.NonBlockingCall(licenseStatus, callback);
+    if (s != napi_ok) {
+        delete licenseStatus;
+    }
 }
 
 Napi::Value getHostConfig(const Napi::CallbackInfo &info)
@@ -130,8 +142,21 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
         Napi::Error::New(env, MISSING_PRODUCT_ID).ThrowAsJavaScriptException();
         return env.Null();
     }
-    LicenseCallbacks[HostProductId] = new CallbackWrapper(callback);
-    LicenseCallbacks[HostProductId]->SuppressDestruct();
+
+    auto existing = LicenseCallbacks.find(HostProductId);
+    if (existing != LicenseCallbacks.end())
+    {
+        existing->second.Abort();
+        LicenseCallbacks.erase(existing);
+    }
+    // third argument is max queue size (0 is unbounded), fourth is initial thread count
+    TSFN_t tsfn = TSFN_t::New(env, callback, "FloatingClientCallback", 0, 1);
+    if (!tsfn)
+    {
+        Napi::Error::New(env, "Failed to set up license callback").ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    LicenseCallbacks.emplace(HostProductId, tsfn);
     return Napi::Number::New(env, SetFloatingLicenseCallback(floatingLicenseCallback));
 }
 
