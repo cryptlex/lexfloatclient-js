@@ -151,8 +151,13 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
     }
     // third argument is max queue size (0 is unbounded), fourth is initial thread count
     TSFN_t tsfn = TSFN_t::New(env, callback, "FloatingClientCallback", 0, 1);
+    if (!tsfn)
+    {
+        Napi::Error::New(env, "Failed to set up license callback").ThrowAsJavaScriptException();
+        return env.Null();
+    }
     LicenseCallbacks.emplace(HostProductId, tsfn);
-    return Napi::Number::New(env, SetFloatingLicenseCallback(&floatingLicenseCallback));
+    return Napi::Number::New(env, SetFloatingLicenseCallback(floatingLicenseCallback));
 }
 
 Napi::Value setFloatingClientMetadata(const Napi::CallbackInfo &info)
