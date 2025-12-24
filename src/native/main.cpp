@@ -3,6 +3,7 @@
 #include <string>
 #include <locale>
 #include <map>
+#include <mutex>
 
 using namespace ::std;
 
@@ -21,7 +22,9 @@ const char *MISSING_PRODUCT_ID = "Product id not set";
 
 STRING HostProductId;
 
-map<STRING, TSFN_t> LicenseCallbacks;
+map<STRING, CallbackWrapper *> LicenseCallbacks;
+
+std::mutex callbackMutex;
 
 STRING toEncodedString(Napi::String input)
 {
@@ -36,19 +39,11 @@ STRING toEncodedString(Napi::String input)
 
 void floatingLicenseCallback(uint32_t status)
 {
+    std::lock_guard<std::mutex> lock(callbackMutex);
     auto it = LicenseCallbacks.find(HostProductId);
-    if(it == LicenseCallbacks.end())
+    if (it != LicenseCallbacks.end() && it->second != nullptr)
     {
-        return;
-    }
-
-    TSFN_t tsfn = it->second;
-
-    uint32_t *licenseStatus = new uint32_t(status);
-
-    napi_status s = tsfn.NonBlockingCall(licenseStatus, callback);
-    if (s != napi_ok) {
-        delete licenseStatus;
+        it->second->Call(status);
     }
 }
 
@@ -143,20 +138,16 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
         return env.Null();
     }
 
-    auto existing = LicenseCallbacks.find(HostProductId);
-    if (existing != LicenseCallbacks.end())
+    // Clean up existing callback if present
     {
-        existing->second.Abort();
-        LicenseCallbacks.erase(existing);
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        auto it = LicenseCallbacks.find(HostProductId);
+        if (it != LicenseCallbacks.end() && it->second != nullptr)
+        {
+            delete it->second;
+        }
+        LicenseCallbacks[HostProductId] = new CallbackWrapper(env, callback);
     }
-    // third argument is max queue size (0 is unbounded), fourth is initial thread count
-    TSFN_t tsfn = TSFN_t::New(env, callback, "FloatingClientCallback", 0, 1);
-    if (!tsfn)
-    {
-        Napi::Error::New(env, "Failed to set up license callback").ThrowAsJavaScriptException();
-        return env.Null();
-    }
-    LicenseCallbacks.emplace(HostProductId, tsfn);
     return Napi::Number::New(env, SetFloatingLicenseCallback(floatingLicenseCallback));
 }
 
