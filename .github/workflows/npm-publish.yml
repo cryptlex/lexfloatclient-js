@@ -112,3 +112,20 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+      - name: Extract version and create tag
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+
+          git tag "$VERSION" 2>/dev/null || echo "Tag already exists"
+          git push origin "$VERSION" || true
+
+      - name: Notify slack releases channel
+        uses: slackapi/slack-github-action@v2
+        with:
+          webhook: ${{ secrets.SLACK_RELEASES_PROD_WEBHOOK_URL }}
+          webhook-type: webhook-trigger
+          payload: |
+            status: "${{ job.status }}"
+            environment: "PRODUCTION"
+            project: "LexFloatClient JS"
