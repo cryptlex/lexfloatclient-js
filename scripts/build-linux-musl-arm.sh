@@ -3,7 +3,7 @@
 set -e
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v4.12.2";
+VERSION="v4.13.0";
 wget ${URL}${VERSION}/LexFloatClient-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexFloatClient-Static-Linux.zip -d ./tmp/linux
