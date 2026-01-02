@@ -3,6 +3,10 @@ name: Build @cryptlex/lexfloatclient package
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: write  # To create tags
+
 jobs:      
   build-addons:
     runs-on: ${{ matrix.os }}
@@ -20,7 +24,7 @@ jobs:
             node-version: 20
             job-type: windows-node20
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - run: git pull origin master --ff-only
 
@@ -108,7 +112,32 @@ jobs:
           npm ci
           npm run build
 
-      - name: Publish
+      # Switch to Node 22 and update npm for publishing
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Ensure npm 11.5.1+ is installed (required for OIDC authentication)
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: 'Publish to NPM'
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+      - name: Extract version and create tag
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+
+          git tag "$VERSION" 2>/dev/null || echo "Tag already exists"
+          git push origin "$VERSION" || true
+
+      - name: Notify slack releases channel
+        uses: slackapi/slack-github-action@v2
+        with:
+          webhook: ${{ secrets.SLACK_RELEASES_PROD_WEBHOOK_URL }}
+          webhook-type: webhook-trigger
+          payload: |
+            status: "${{ job.status }}"
+            environment: "PRODUCTION"
+            project: "LexFloatClient JS"
