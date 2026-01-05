@@ -1,5 +1,5 @@
 import { LexFloatClientException } from "./lexfloatclient-exception";
-import { arrayToString, LexFloatClientNative } from "./lexfloatclient-native";
+import { arrayToString, getCArray, LexFloatClientNative } from "./lexfloatclient-native";
 import { LexFloatStatusCodes } from "./lexfloatstatus-codes";
 
 /**
@@ -196,7 +196,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostProductVersionName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetHostProductVersionName(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -211,7 +211,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostProductVersionDisplayName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetHostProductVersionDisplayName(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -225,7 +225,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetFloatingLicenseMode(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetFloatingLicenseMode(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -242,7 +242,7 @@ export class LexFloatClient {
 	 */
 	static GetHostProductVersionFeatureFlag(name: string): HostProductVersionFeatureFlag {
 		const enabled = new Uint32Array(1);
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetHostProductVersionFeatureFlag(name, enabled, array, array.length);
 		switch (status) {
 			case LexFloatStatusCodes.LF_OK:
@@ -258,7 +258,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostLicenseEntitlementSetName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetHostLicenseEntitlementSetName(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -272,7 +272,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostLicenseEntitlementSetDisplayName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetHostLicenseEntitlementSetDisplayName(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -286,7 +286,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostFeatureEntitlements(): HostFeatureEntitlement[] {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexFloatClientNative.GetHostFeatureEntitlements(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -301,7 +301,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostFeatureEntitlement(featureName: string): HostFeatureEntitlement {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexFloatClientNative.GetHostFeatureEntitlement(featureName, array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -318,7 +318,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostProductMetadata(key: string): string {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexFloatClientNative.GetHostProductMetadata(key, array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -335,7 +335,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetHostLicenseMetadata(key: string): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetHostLicenseMetadata(key, array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -388,7 +388,7 @@ export class LexFloatClient {
 	 * @throws {LexActivatorException}
 	 */
 	static GetHostConfig(): HostConfig | null {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexFloatClientNative.GetHostConfig(array, array.length)
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -432,7 +432,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetFloatingClientMetadata(key: string): string {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexFloatClientNative.GetFloatingClientMetadata(key, array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
@@ -445,7 +445,7 @@ export class LexFloatClient {
 	 * @throws {LexFloatClientException}
 	 */
 	static GetFloatingClientLibraryVersion(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexFloatClientNative.GetFloatingClientLibraryVersion(array, array.length);
 		if (status != LexFloatStatusCodes.LF_OK) {
 			throw new LexFloatClientException(status);
