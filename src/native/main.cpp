@@ -290,6 +290,24 @@ Napi::Value getHostLicenseEntitlementSetDisplayName(const Napi::CallbackInfo &in
     return Napi::Number::New(env, GetHostLicenseEntitlementSetDisplayName(arg0, length));
 }
 
+Napi::Value getHostLicenseEntitlementSetTier(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::BigInt64Array array = info[0].As<Napi::BigInt64Array>();
+    int64_t *arg0 = reinterpret_cast<int64_t *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetHostLicenseEntitlementSetTier(arg0));
+}
+
 Napi::Value getHostFeatureEntitlements(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -652,6 +670,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetHostProductVersionFeatureFlag"] = Napi::Function::New(env, getHostProductVersionFeatureFlag);
     exports["GetHostLicenseEntitlementSetName"] = Napi::Function::New(env, getHostLicenseEntitlementSetName);
     exports["GetHostLicenseEntitlementSetDisplayName"] = Napi::Function::New(env, getHostLicenseEntitlementSetDisplayName);
+    exports["GetHostLicenseEntitlementSetTier"] = Napi::Function::New(env, getHostLicenseEntitlementSetTier);
     exports["GetHostFeatureEntitlements"] = Napi::Function::New(env, getHostFeatureEntitlements);
     exports["GetHostFeatureEntitlement"] = Napi::Function::New(env, getHostFeatureEntitlement);
     exports["GetHostProductMetadata"] = Napi::Function::New(env, getHostProductMetadata);
