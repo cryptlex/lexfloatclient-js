@@ -281,6 +281,20 @@ export class LexFloatClient {
 	}
 
 	/**
+	 * Gets the tier of the entitlement set associated with the LexFloatServer license.
+	 * @return {number} Returns the host license entitlement tier.
+	 * @throws {LexFloatClientException}
+	 */
+	static GetHostLicenseEntitlementSetTier(): number {
+		const tier = new BigInt64Array(1);
+		const status = LexFloatClientNative.GetHostLicenseEntitlementSetTier(tier);
+		if (status != LexFloatStatusCodes.LF_OK) {
+			throw new LexFloatClientException(status);
+		}
+		return Number(tier[0]) ? Number(tier[0]) : 0;
+	}
+
+	/**
 	 * Gets the feature entitlements associated with the LexFloatServer license.
 	 * @return {HostFeatureEntitlement[]} Returns the host license feature entitlements.
 	 * @throws {LexFloatClientException}
