@@ -246,7 +246,6 @@ enum LexFloatStatusCodes
 
     /*
         CODE: LF_E_LEASE_EXCEEDS_SERVER_LICENSE_EXPIRY
-
         MESSAGE: Requested offline lease duration exceeds server license expiry date.
     */
     LF_E_LEASE_EXCEEDS_SERVER_LICENSE_EXPIRY = 77
