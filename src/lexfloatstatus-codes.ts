@@ -199,5 +199,10 @@ export const LexFloatStatusCodes = {
 	/**
 	 * The grace period for server license is over.
 	 */
-	LF_E_SERVER_LICENSE_GRACE_PERIOD_OVER: 76
+	LF_E_SERVER_LICENSE_GRACE_PERIOD_OVER: 76,
+
+	/**
+	 * Requested offline lease duration exceeds server license expiry date.
+	 */
+	LF_E_LEASE_EXCEEDS_SERVER_LICENSE_EXPIRY: 77
 };

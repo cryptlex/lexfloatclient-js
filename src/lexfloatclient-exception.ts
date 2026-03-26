@@ -123,6 +123,9 @@ export class LexFloatClientException extends Error {
 			case LexFloatStatusCodes.LF_E_FEATURE_ENTITLEMENT_NOT_FOUND:
 				message = "The feature entitlement does not exist.";
 				break;
+			case LexFloatStatusCodes.LF_E_LEASE_EXCEEDS_SERVER_LICENSE_EXPIRY:
+				message = "Requested offline lease duration exceeds server license expiry date.";
+				break;
 			default:
 				message = 'Unknown error!';
 		}
