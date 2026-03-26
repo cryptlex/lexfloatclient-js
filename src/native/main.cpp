@@ -37,7 +37,8 @@ STRING toEncodedString(Napi::String input)
 size_t getCharCount(Napi::Env env, size_t byteLength)
 {
 #ifdef _WIN32
-    if (byteLength % sizeof(CHARTYPE) != 0) {
+    if (byteLength % sizeof(CHARTYPE) != 0)
+    {
         Napi::TypeError::New(env, "Invalid UTF-16 buffer length").ThrowAsJavaScriptException();
         return 0;
     }
@@ -51,7 +52,7 @@ size_t getCharCount(Napi::Env env, size_t byteLength)
 void floatingLicenseCallback(uint32_t status)
 {
     auto it = LicenseCallbacks.find(HostProductId);
-    if(it == LicenseCallbacks.end())
+    if (it == LicenseCallbacks.end())
     {
         return;
     }
@@ -61,7 +62,8 @@ void floatingLicenseCallback(uint32_t status)
     uint32_t *licenseStatus = new uint32_t(status);
 
     napi_status s = tsfn.NonBlockingCall(licenseStatus, callback);
-    if (s != napi_ok) {
+    if (s != napi_ok)
+    {
         delete licenseStatus;
     }
 }
@@ -81,7 +83,8 @@ Napi::Value getHostConfig(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -154,7 +157,7 @@ Napi::Value setFloatingLicenseCallback(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Function callback = info[0].As<Napi::Function>();
-    if(HostProductId.empty())
+    if (HostProductId.empty())
     {
         Napi::Error::New(env, MISSING_PRODUCT_ID).ThrowAsJavaScriptException();
         return env.Null();
@@ -215,7 +218,8 @@ Napi::Value getHostProductVersionName(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -237,14 +241,16 @@ Napi::Value getHostProductVersionDisplayName(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetHostProductVersionDisplayName(arg0, length));
 }
 
-Napi::Value getHostProductVersionFeatureFlag(const Napi::CallbackInfo &info) {
+Napi::Value getHostProductVersionFeatureFlag(const Napi::CallbackInfo &info)
+{
     Napi::Env env = info.Env();
     if (info.Length() < 3)
     {
@@ -272,7 +278,8 @@ Napi::Value getHostProductVersionFeatureFlag(const Napi::CallbackInfo &info) {
     Napi::Uint8Array array2 = info[2].As<Napi::Uint8Array>();
     CHARTYPE *arg2 = reinterpret_cast<CHARTYPE *>(array2.ArrayBuffer().Data());
     size_t length = getCharCount(env, array2.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     return Napi::Number::New(env, GetHostProductVersionFeatureFlag(arg0.c_str(), arg1, arg2, length));
@@ -293,7 +300,8 @@ Napi::Value getHostLicenseEntitlementSetName(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -315,7 +323,8 @@ Napi::Value getHostLicenseEntitlementSetDisplayName(const Napi::CallbackInfo &in
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -337,7 +346,8 @@ Napi::Value getHostFeatureEntitlements(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -365,7 +375,8 @@ Napi::Value getHostFeatureEntitlement(const Napi::CallbackInfo &info)
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -393,7 +404,8 @@ Napi::Value getHostProductMetadata(const Napi::CallbackInfo &info)
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -421,7 +433,8 @@ Napi::Value getHostLicenseMetadata(const Napi::CallbackInfo &info)
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -529,7 +542,8 @@ Napi::Value getFloatingClientMetadata(const Napi::CallbackInfo &info)
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -551,7 +565,8 @@ Napi::Value getFloatingClientLibraryVersion(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
@@ -591,7 +606,8 @@ Napi::Value getFloatingLicenseMode(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = getCharCount(env, array.ByteLength());
-    if(env.IsExceptionPending()) {
+    if (env.IsExceptionPending())
+    {
         return env.Null();
     }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
