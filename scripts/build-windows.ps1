@@ -23,4 +23,4 @@ node-gyp rebuild --arch=ia32
 
 Copy-Item -Path ".\build\Release\lexfloatclient.node" -Destination ".\lib\bindings\windows\x32\lexfloatclient.node"
 Copy-Item -Path ".\tmp\windows\LexFloatClient-Win\libs\vc14\x86\LexFloatClient.dll" -Destination ".\lib\bindings\windows\x32\LexFloatClient.dll"
-
+Copy-Item -Path ".\tmp\windows\LexActivator-Win\THIRD-PARTY-NOTICES.txt" -Destination ".\lib\bindings\windows\THIRD-PARTY-NOTICES.txt"

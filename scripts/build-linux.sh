@@ -16,4 +16,5 @@ cp ./tmp/linux/libs/gcc/amd64/libLexFloatClient.a ./
 npm i
 node-gyp rebuild 
 cp ./build/Release/lexfloatclient.node ./lib/bindings/linux/gcc/x64
+cp ./tmp/linux/THIRD-PARTY-NOTICES.txt ./lib/bindings/linux/
 rm -f LexFloatClient-Static-Linux.zip
