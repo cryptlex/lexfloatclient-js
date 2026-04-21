@@ -22,4 +22,5 @@ cp ./build/Release/lexfloatclient.node ./lib/bindings/macos/x64
 
 SDKROOT=$(xcrun --sdk macosx --show-sdk-path) node-gyp rebuild --arch=arm64
 cp ./build/Release/lexfloatclient.node ./lib/bindings/macos/arm64
+cp ./tmp/macos/THIRD-PARTY-NOTICES.txt ./lib/bindings/macos/
 rm -f LexFloatClient-Static-Mac.zip

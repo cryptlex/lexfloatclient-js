@@ -16,4 +16,3 @@ node-gyp rebuild --arch=arm64
 
 Copy-Item -Path ".\build\Release\lexfloatclient.node" -Destination ".\lib\bindings\windows\arm64\lexfloatclient.node"
 Copy-Item -Path ".\tmp\windows\LexFloatClient-Win\libs\vc17\arm64\LexFloatClient.dll" -Destination ".\lib\bindings\windows\arm64\LexFloatClient.dll"
-
