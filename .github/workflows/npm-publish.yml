@@ -121,7 +121,7 @@ jobs:
       # Switch to Node 22 and update npm for publishing
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
       # Ensure npm 11.5.1+ is installed (required for OIDC authentication)
