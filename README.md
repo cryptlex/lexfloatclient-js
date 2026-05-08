@@ -19,4 +19,4 @@ Then you can include it in your code:
 ## Usage
 Refer to following for documentation:
 
-https://docs.cryptlex.com/floating-licenses/on-premise-floating-licenses/using-lexfloatclient/using-lexfloatclient-with-node.js
+https://cryptlex.com/docs/on-premise-floating-licenses/using-lexfloatclient/integrating-lexfloatclient
